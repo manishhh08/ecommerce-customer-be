@@ -1,5 +1,5 @@
 import express from "express";
-import { createNewUser, loginUser } from "../controllers/authController.js";
+// import { createNewUser, loginUser } from "../controllers/authController.js";
 import {
   createUserValidation,
   loginValidation,
@@ -8,7 +8,10 @@ import {
 
 const router = express.Router();
 
-router.post("/", createUserValidation, createNewUser);
-router.post("/login", loginValidation, loginUser);
+// router.post("/", createUserValidation, createNewUser);
+// router.post("/login", loginValidation, loginUser);
+
+router.post("/", createUserValidation);
+router.post("/login", loginValidation);
 
 export default router;
