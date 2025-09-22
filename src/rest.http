@@ -1,0 +1,78 @@
+@apiURL = http://localhost:4000/api/v1
+
+####
+POST {{apiURL}}/auth
+Content-Type: application/json
+
+{
+  "email": "absc@gmail.com", 
+  "password": "12345"
+}
+
+<<<<<<< HEAD
+
+#####
+=======
+###
+>>>>>>> 9a42c9e9e5b45bacf9507a8529a3e8a2515fc1ad
+POST {{apiURL}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "absc@gmail.com", 
+  "password": "12345"
+
+}
+
+###
+POST {{apiURL}}/category
+Content-Type: application/json
+
+{
+  "name":"Laptop"
+}
+
+###
+ GET {{apiURL}}/category
+Content-Type: application/json
+
+
+#####
+POST {{apiURL}}/products
+Content-Type: application/json
+
+{
+  "name": "Nokia Lumia",
+  "description": "Ancient Beast",
+  "price": 300,
+  "stock": 3,
+  "category": "68c8f01555ede480a0121d5e",
+  "images": ["https://msblogs.thesourcemediaassets.com/2013/08/5543.Lumia925Blk34Combo3ATT_5F00_LR_5F00_1CC4F241.jpg", "https://cdn.mos.cms.futurecdn.net/irLuBqtehijKJiyd8DWum8.jpg"],
+  "speacility": "Doesnt break at all"
+}
+
+
+#####
+GET {{apiURL}}/products
+
+
+
+#####
+#### Update product
+PATCH {{apiURL}}/products
+Content-Type: application/json
+
+{
+  "id": "68cfbe279b2684f7f1118e28", 
+  "description": "Phone is now discontinued."
+}
+
+
+#####
+#### Delete product
+DELETE {{apiURL}}/products
+Content-Type: application/json
+
+{
+  "id": "68cfbe279b2684f7f1118e28"
+}
