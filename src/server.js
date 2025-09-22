@@ -16,6 +16,7 @@ app.get("/", (req, res) => {
 // auth router
 app.use("/api/v1/auth", authRouter);
 //routes here were deleted
+// updated by Subin
 
 mongoConnect()
   .then(() => {
