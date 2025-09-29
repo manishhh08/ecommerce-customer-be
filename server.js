@@ -3,6 +3,7 @@ import cors from "cors";
 import mongoConnect from "./src/config/mongoConfig.js";
 import config from "./src/config/config.js";
 import authRouter from "./src/routes/authRouter.js";
+import userRouter from "./src/routes/userRouter.js";
 
 const app = express();
 app.use(cors());
@@ -13,6 +14,8 @@ app.get("/", (req, res) => {
   res.send("I am alive");
 });
 
+//user routes
+app.use("/api/v1/user", userRouter);
 // auth router
 app.use("/api/v1/auth", authRouter);
 //routes here were deleted

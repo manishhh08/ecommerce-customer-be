@@ -7,8 +7,8 @@ Content-Type: application/json
 {
   "fname": "deep",
   "lname": "ghotane",
-  "email": "absc@gmail.com", 
-  "password": "12345"
+  "email": "deep@gmail.com", 
+  "password": "1234"
 }
 
 
@@ -20,8 +20,8 @@ POST {{apiURL}}/auth/login
 Content-Type: application/json
 
 {
-  "email": "absc@gmail.com", 
-  "password": "12345"
+  "email": "deep@gmail.com", 
+  "password": "1234"
 
 }
 

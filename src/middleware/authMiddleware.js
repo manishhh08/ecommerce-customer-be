@@ -1,4 +1,4 @@
-import { findByFilter } from "../models/users/UserModel.js";
+import { findByFilter } from "../models/customers/userModel.js";
 // import { decodeAccessToken, decodeRefreshToken } from "../utils/jwt.js";
 import { decodeAccessToken } from "../utils/jwt.js";
 
