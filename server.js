@@ -11,13 +11,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
-  res.send("I am alive");
+  res.send("I am Customer Front End");
 });
+
+// auth router
+app.use("/api/v1/auth", authRouter);
 
 //user routes
 app.use("/api/v1/user", userRouter);
-// auth router
-app.use("/api/v1/auth", authRouter);
 //routes here were deleted
 // updated by Subin
 
