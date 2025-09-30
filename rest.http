@@ -5,13 +5,11 @@ POST {{apiURL}}/auth
 Content-Type: application/json
 
 {
-  "fname": "manish",
-  "lname": "lama",
-  "email": "manish@gmail.com", 
+  "fname": "oi",
+  "lname": "oi",
+  "email": "oi@gmail.com",
   "password": "1234"
 }
-
-
 
 
 ###
@@ -20,17 +18,18 @@ POST {{apiURL}}/auth/login
 Content-Type: application/json
 
 {
-  "email": "manish@gmail.com", 
+  "email": "oi@gmail.com", 
   "password": "1234"
 
 }
 
 ###
-POST {{apiURL}}/category
+GET {{apiURL}}/user
 Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im9pQGdtYWlsLmNvbSIsImZuYW1lIjoib2kiLCJsbmFtZSI6Im9pIiwicm9sZSI6ImN1c3RvbWVyIiwiaWF0IjoxNzU5MjA3MTI1LCJleHAiOjE3NTk4MTE5MjV9.N5RTr1va53T8JT-suVIy2qW3JO64Sbn68SfMBgfAFc4
 
 {
-  "name":"Laptop"
+
 }
 
 ###

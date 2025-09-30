@@ -1,4 +1,4 @@
-import { findByFilter } from "../models/customers/userModel.js";
+import { findByFilter } from "../models/customers/customerModel.js";
 // import { decodeAccessToken, decodeRefreshToken } from "../utils/jwt.js";
 import { decodeAccessToken } from "../utils/jwt.js";
 
@@ -8,9 +8,11 @@ export const authMiddleware = async (req, res, next) => {
 
     let decoded = decodeAccessToken(accessToken);
     console.log("Return value", decoded);
-    let user = await findByFilter({ email });
+    let user = await findByFilter({ email: decoded.email });
+    console.log(user);
 
-    if (user && user?.accessToken.includes(accessToken)) {
+    // if (user && user?.accessToken.includes(accessToken)) {
+    if (user) {
       user.password = "";
       req.user = user;
       next();
@@ -18,7 +20,7 @@ export const authMiddleware = async (req, res, next) => {
       res.status(401).json({ status: "error", message: "Unauthorized" });
     }
   } catch (err) {
-    console.log("Auth error:", err.message);
+    console.log("Auth error:", err);
     let errorMessage = err.message.includes("jwt expire")
       ? err.message
       : "Server Error";

@@ -3,7 +3,7 @@ import cors from "cors";
 import mongoConnect from "./src/config/mongoConfig.js";
 import config from "./src/config/config.js";
 import authRouter from "./src/routes/authRouter.js";
-import userRouter from "./src/routes/userRouter.js";
+import customerRouter from "./src/routes/customerRouter.js";
 
 const app = express();
 app.use(cors());
@@ -18,7 +18,7 @@ app.get("/", (req, res) => {
 app.use("/api/v1/auth", authRouter);
 
 //user routes
-app.use("/api/v1/user", userRouter);
+app.use("/api/v1/user", customerRouter);
 //routes here were deleted
 // updated by Subin
 
