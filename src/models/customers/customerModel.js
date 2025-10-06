@@ -7,7 +7,7 @@ export const getAllUsers = () => {
   return Customer.find();
 };
 
-export const findById = (customerId) => {
+export const findCustomer = (customerId) => {
   return Customer.findById(customerId);
 };
 
