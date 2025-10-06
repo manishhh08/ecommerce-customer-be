@@ -5,7 +5,7 @@ import {
 import { encodeFunction, decodeFunction } from "../utils/encodeHelper.js";
 import { createAccessToken } from "../utils/jwt.js";
 
-export const createNewUser = async (req, res) => {
+export const createNewCustomer = async (req, res) => {
   const { fname, lname, email, password } = req.body;
   const hashedPassword = encodeFunction(password);
   try {
@@ -25,19 +25,17 @@ export const createNewUser = async (req, res) => {
         .json({ status: "error", message: "Error creating customer" });
     }
   } catch (error) {
-    console.log(error);
     return res
       .status(500)
       .json({ status: "error", message: "Internal server error" });
   }
 };
-export const loginUser = async (req, res) => {
+export const loginCustomer = async (req, res) => {
   let { email, password } = req.body;
   try {
     const user = await findByFilter({ email });
 
     if (!user) {
-      console.log("Login failed: user not found for email", email);
       return res
         .status(401)
         .json({ status: "error", message: "Invalid credentials" });
@@ -46,7 +44,6 @@ export const loginUser = async (req, res) => {
     const isPasswordValid = decodeFunction(password, user.password);
 
     if (!isPasswordValid) {
-      console.log("Login failed: wrong password for email", email);
       return res
         .status(401)
         .json({ status: "error", message: "Invalid credentials" });
@@ -60,7 +57,6 @@ export const loginUser = async (req, res) => {
     };
 
     const accessToken = createAccessToken(payload);
-    console.log("Login successful, token:", accessToken);
 
     return res.status(200).json({
       status: "success",

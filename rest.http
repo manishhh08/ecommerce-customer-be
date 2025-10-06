@@ -5,9 +5,9 @@ POST {{apiURL}}/auth
 Content-Type: application/json
 
 {
-  "fname": "oi",
-  "lname": "oi",
-  "email": "oi@gmail.com",
+  "fname": "deepgh",
+  "lname": "deepgh",
+  "email": "deepgh@gmail.com",
   "password": "1234"
 }
 
@@ -18,7 +18,7 @@ POST {{apiURL}}/auth/login
 Content-Type: application/json
 
 {
-  "email": "oi@gmail.com", 
+  "email": "deepgh@gmail.com", 
   "password": "1234"
 
 }
@@ -26,7 +26,7 @@ Content-Type: application/json
 ###
 GET {{apiURL}}/user
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im9pQGdtYWlsLmNvbSIsImZuYW1lIjoib2kiLCJsbmFtZSI6Im9pIiwicm9sZSI6ImN1c3RvbWVyIiwiaWF0IjoxNzU5MjA3MTI1LCJleHAiOjE3NTk4MTE5MjV9.N5RTr1va53T8JT-suVIy2qW3JO64Sbn68SfMBgfAFc4
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlZXBnaEBnbWFpbC5jb20iLCJsbmFtZSI6ImRlZXBnaCIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc1OTc1MTg0MiwiZXhwIjoxNzYwMzU2NjQyfQ.ygb6RgbI9tBUkm7bHunkLmf6CnkiXeMUqnskQ6lF1bg
 
 {
 
