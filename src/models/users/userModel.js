@@ -4,6 +4,10 @@ export const newAdmin = (userObject) => {
   return User.insertOne(userObject);
 };
 
+export const getAllCustomers = () => {
+  return User.find({ role: 'customer' });
+}
+
 export const findById = (userId) => {
   return User.findById(userId);
 };
@@ -13,7 +17,7 @@ export const findByFilter = (filterObj) => {
 };
 
 export const updateById = (userId, updateObj) => {
-  return User.findByIdAndUpdate(userId, updateObj);
+  return User.findByIdAndUpdate(userId, updateObj, { new: true });
 };
 
 export const deleteById = (userId) => {

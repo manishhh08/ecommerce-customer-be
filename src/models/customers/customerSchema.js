@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const customerSchema = new mongoose.Schema(
     {
@@ -13,7 +13,7 @@ const customerSchema = new mongoose.Schema(
         },
         phone: {
             type: String,
-            // required: true,
+            required: true,
         },
         address: {
             type: String,
@@ -25,4 +25,4 @@ const customerSchema = new mongoose.Schema(
     }
 );
 
-export default mongoose.model("Customer", customerSchema);
+export default mongoose.model('Customer', customerSchema);
