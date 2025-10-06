@@ -4,9 +4,9 @@ const joiValidator = (schema, req, res, next) => {
   const { error } = schema.validate(req.body);
   error
     ? res.json({
-        status: "error",
-        message: error.message,
-      })
+      status: "error",
+      message: error.message,
+    })
     : next();
 };
 
