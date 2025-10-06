@@ -19,8 +19,6 @@ app.use("/api/v1/auth", authRouter);
 
 //user routes
 app.use("/api/v1/user", customerRouter);
-//routes here were deleted
-// updated by Subin
 
 mongoConnect()
   .then(() => {
