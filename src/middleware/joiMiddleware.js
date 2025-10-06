@@ -21,7 +21,8 @@ export const loginValidation = (req, res, next) => {
 
 export const createUserValidation = (req, res, next) => {
   let createUserSchema = Joi.object({
-    // name: Joi.string().required(),
+    fname: Joi.string().required(),
+    lname: Joi.string().required(),
     email: Joi.string().email().required(),
     password: Joi.string().required(),
   });
@@ -31,7 +32,6 @@ export const createUserValidation = (req, res, next) => {
 
 export const addProductValidation = (req, res, next) => {
   let createProductSchema = Joi.object({
-    // name: Joi.string().required(),
     name: Joi.string().required(),
     description: Joi.string().required(),
     price: Joi.number().required(),

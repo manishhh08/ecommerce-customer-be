@@ -1,5 +1,8 @@
 import express from "express";
-import { createNewCustomer, loginCustomer } from "../controllers/authController.js";
+import {
+  createNewCustomer,
+  loginCustomer,
+} from "../controllers/authController.js";
 import {
   createUserValidation,
   loginValidation,

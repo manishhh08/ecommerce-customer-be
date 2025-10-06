@@ -1,77 +1,70 @@
-import { decodeFunction, encodeFunction } from "../utils/encodeHelper.js";
-import { createAccessToken, createRefreshToken } from "../utils/jwt.js";
-import { findByFilter } from "../models/users/userModel.js";
+import {
+  findByFilter,
+  newCustomer,
+} from "../models/customers/customerModel.js";
+import { encodeFunction, decodeFunction } from "../utils/encodeHelper.js";
+import { createAccessToken } from "../utils/jwt.js";
 
 export const createNewCustomer = async (req, res) => {
-    // Implementation for creating a new customer
-    const { username, email, password } = req.body;
-    const hashedPassword = await encodeFunction(password);
-    try {
-        const newCustomer = {
-            username,
-            email,
-            password: hashedPassword,
-            role: "customer",
-        };
-        if (role !== "customer") {
-            return res.status(400).json({
-                status: "error",
-                message: "Invalid role. Only 'customer' role is allowed.",
-            });
-        }
-
-        res.status(201).json({
-            status: "success",
-            message: "Customer registered successfully",
-        });
-    } catch (error) {
-        res.status(500).json({
-            status: "error",
-            message: "An error occurred while registering the customer.",
-        });
+  const { fname, lname, email, password } = req.body;
+  const hashedPassword = encodeFunction(password);
+  try {
+    const user = await newCustomer({
+      email,
+      fname,
+      lname,
+      password: hashedPassword,
+    });
+    if (user) {
+      return res
+        .status(200)
+        .json({ status: "success", message: "Customer created successfully" });
+    } else {
+      return res
+        .status(500)
+        .json({ status: "error", message: "Error creating customer" });
     }
-}
-
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ status: "error", message: "Internal server error" });
+  }
+};
 export const loginCustomer = async (req, res) => {
-    // Implementation for customer login
-    const { email, password } = req.body;
-    try {
-        const user = await findByFilter(email);
-        if (user.role == "customer") {
-            const result = decodeFunction(password, user.password);
+  let { email, password } = req.body;
+  try {
+    const user = await findByFilter({ email });
 
-            let payload = {
-                id: user._id,
-                email: user.email,
-                role: user.role,
-            };
-        } else {
-            return res.status(403).json({
-                status: "error",
-                message: "Access denied. Not a customer.",
-            });
-        }
-
-        let accessToken = createAccessToken(payload);
-        let refreshToken = createRefreshToken(payload);
-
-        if (result) {
-            return res.status(200).json({
-                status: "success",
-                message: "Login successful",
-                accessToken,
-                refreshToken,
-            });
-        } else {
-            return res.status(401).json({
-                status: "error",
-                message: "Invalid credentials",
-            });
-        }
-    } catch (error) {
-        res.status(500).json({
-            status: "error",
-            message: "An error occurred while logging in.",
-        });
+    if (!user) {
+      return res
+        .status(401)
+        .json({ status: "error", message: "Invalid credentials" });
     }
+
+    const isPasswordValid = decodeFunction(password, user.password);
+
+    if (!isPasswordValid) {
+      return res
+        .status(401)
+        .json({ status: "error", message: "Invalid credentials" });
+    }
+
+    const payload = {
+      email: user.email,
+      fname: user.fname,
+      lname: user.lname,
+      role: user.role || "customer",
+    };
+
+    const accessToken = createAccessToken(payload);
+
+    return res.status(200).json({
+      status: "success",
+      message: "Login Successful",
+      accessToken,
+    });
+  } catch (error) {
+    console.error("Login Error:", error);
+    return res.status(500).json({ status: "error", message: "Server Error" });
+  }
 };
