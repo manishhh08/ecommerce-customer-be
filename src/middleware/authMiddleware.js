@@ -11,8 +11,7 @@ export const authMiddleware = async (req, res, next) => {
     let user = await findByFilter({ email: decoded.email });
     console.log(user);
 
-    // if (user && user?.accessToken.includes(accessToken)) {
-    if (user) {
+     if (user && user?.accessToken.includes(accessToken)) {
       user.password = "";
       req.user = user;
       next();
