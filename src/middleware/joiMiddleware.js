@@ -4,9 +4,9 @@ const joiValidator = (schema, req, res, next) => {
   const { error } = schema.validate(req.body);
   error
     ? res.json({
-      status: "error",
-      message: error.message,
-    })
+        status: "error",
+        message: error.message,
+      })
     : next();
 };
 
@@ -25,6 +25,10 @@ export const createUserValidation = (req, res, next) => {
     lname: Joi.string().required(),
     email: Joi.string().email().required(),
     password: Joi.string().required(),
+    cpassword: Joi.string()
+      .valid(Joi.ref("password"))
+      .required()
+      .messages({ "any.only": "Password doesn't match" }),
   });
 
   joiValidator(createUserSchema, req, res, next);
