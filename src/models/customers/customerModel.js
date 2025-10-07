@@ -1,22 +1,24 @@
-import Customer from "./customerSchema";
+import Customer from "./customerSchema.js";
 
-export const getAllCustomers = () => {
-    return Customer.find({});
+export const newCustomer = (customerObject) => {
+  return Customer.create(customerObject);
+};
+export const getAllUsers = () => {
+  return Customer.find();
 };
 
-export const insertCustomer = (customerObj) => {
-    const newCustomer = new Customer(customerObj);
-    return newCustomer.save();
+export const findCustomer = (customerId) => {
+  return Customer.findById(customerId);
 };
 
-export const getCustomerById = (customerId) => {
-    return Customer.findById(customerId);
+export const findByFilter = (filterObj) => {
+  return Customer.findOne(filterObj);
 };
 
-export const updateCustomerById = (customerId, updateObj) => {
-    return Customer.findByIdAndUpdate(customerId, updateObj, { new: true });
+export const updateById = (customerId, updateObj) => {
+  return Customer.findByIdAndUpdate(customerId, updateObj);
 };
 
-export const deleteCustomerById = (customerId) => {
-    return Customer.findByIdAndDelete(customerId);
+export const deleteById = (customerId) => {
+  return Customer.findOneAndDelete(customerId);
 };

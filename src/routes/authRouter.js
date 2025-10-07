@@ -1,5 +1,8 @@
 import express from "express";
-import { createNewCustomer, loginCustomer } from "../controllers/authController.js";
+import {
+  createNewCustomer,
+  loginCustomer,
+} from "../controllers/authController.js";
 import {
   createUserValidation,
   loginValidation,
@@ -7,7 +10,7 @@ import {
 
 const router = express.Router();
 
-router.post("/", createUserValidation, createNewCustomer);
+router.post("/register", createUserValidation, createNewCustomer);
 router.post("/login", loginValidation, loginCustomer);
 
 export default router;
