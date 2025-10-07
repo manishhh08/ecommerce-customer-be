@@ -1,7 +1,7 @@
 import Customer from "./customerSchema.js";
 
 export const newCustomer = (customerObject) => {
-  return Customer.insertOne(customerObject);
+  return Customer.create(customerObject);
 };
 export const getAllUsers = () => {
   return Customer.find();
