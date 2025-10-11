@@ -1,6 +1,4 @@
-// import { getAllUsers } from "../models/customers/customerModel";
-
-export const getUserDetail = (req, res) => {
+export const getCustomerDetail = (req, res) => {
   try {
     const user = req.user;
     if (!user) {
@@ -13,7 +11,7 @@ export const getUserDetail = (req, res) => {
     return res.json({
       status: "success",
       message: "User details fetched successfully",
-      user,
+      customer: user,
     });
   } catch (error) {
     return res.status(500).json({

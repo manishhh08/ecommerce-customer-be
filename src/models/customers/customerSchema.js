@@ -25,6 +25,10 @@ const customerSchema = new mongoose.Schema(
       enum: ["admin", "customer", "superadmin"],
       default: "customer",
     },
+    phone: {
+      type: String,
+      unique: true,
+    },
 
     image: {
       type: String,
