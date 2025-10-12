@@ -16,7 +16,7 @@ export const createNewCustomer = async (req, res) => {
         message: "Email is already registered",
       });
     }
-    const hashedPassword = await encodeFunction(password);
+    const hashedPassword = encodeFunction(password);
 
     const user = await newCustomer({
       email,
