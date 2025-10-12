@@ -18,7 +18,7 @@ POST {{apiURL}}/auth/login
 Content-Type: application/json
 
 {
-  "email": "deepgh@gmail.com", 
+  "email": "tester@gmail.com", 
   "password": "1234"
 
 }
@@ -36,6 +36,9 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlZXBnaEBnbWFp
  GET {{apiURL}}/category
 Content-Type: application/json
 
+{
+  
+}
 
 #####
 POST {{apiURL}}/products
