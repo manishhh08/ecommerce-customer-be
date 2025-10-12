@@ -22,8 +22,11 @@ const customerSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["admin", "customer", "superadmin"],
       default: "customer",
+    },
+    phone: {
+      type: String,
+      unique: true,
     },
 
     image: {
@@ -32,6 +35,10 @@ const customerSchema = new mongoose.Schema(
     verified: {
       type: Boolean,
       default: false,
+    },
+    phone: {
+      type: String,
+      required: true,
     },
   },
   {

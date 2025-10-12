@@ -4,6 +4,7 @@ import mongoConnect from "./src/config/mongoConfig.js";
 import config from "./src/config/config.js";
 import authRouter from "./src/routes/authRouter.js";
 import customerRouter from "./src/routes/customerRouter.js";
+import categoryRouter from "./src/routes/categoryRouter.js";
 
 const app = express();
 app.use(cors());
@@ -18,7 +19,10 @@ app.get("/", (req, res) => {
 app.use("/api/v1/auth", authRouter);
 
 //user routes
-app.use("/api/v1/user", customerRouter);
+app.use("/api/v1/customer", customerRouter);
+
+//category router
+app.use("/api/v1/category", categoryRouter);
 
 mongoConnect()
   .then(() => {
