@@ -4,10 +4,13 @@ import {
 } from "../models/customers/customerModel.js";
 import { encodeFunction, decodeFunction } from "../utils/encodeHelper.js";
 import { createAccessToken, createRefreshToken } from "../utils/jwt.js";
+import { v4 as uuidv4 } from "uuid";
 
 export const createNewCustomer = async (req, res) => {
   try {
     const { fname, lname, email, password, phone } = req.body;
+
+    const randomString = uuidv4();
 
     const existingCustomer = await findByFilter({ email });
     if (existingCustomer) {
