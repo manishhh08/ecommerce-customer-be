@@ -3,7 +3,7 @@ import Customer from "./customerSchema.js";
 export const newCustomer = (customerObject) => {
   return Customer.create(customerObject);
 };
-export const getAllUsers = () => {
+export const getAllCustomers = () => {
   return Customer.find();
 };
 

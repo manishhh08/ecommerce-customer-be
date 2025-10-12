@@ -18,7 +18,7 @@ app.get("/", (req, res) => {
 app.use("/api/v1/auth", authRouter);
 
 //user routes
-app.use("/api/v1/user", customerRouter);
+app.use("/api/v1/customer", customerRouter);
 
 mongoConnect()
   .then(() => {
