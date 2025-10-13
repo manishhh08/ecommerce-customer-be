@@ -1,9 +1,10 @@
 import { MongoClient } from "mongodb";
 import config from "./config.js";
-
+import mongoose from "mongoose";
+//for mongo native drive to read data from db
 let db;
 
-const mongoConnect = async () => {
+export const mongoConnect = async () => {
   if (db) return db;
 
   try {
@@ -26,4 +27,7 @@ export const getDB = () => {
   return db;
 };
 
-export default mongoConnect;
+//for mongoose to create and login user
+export const mongooseConnect = async () => {
+  return mongoose.connect(config.mongoOptions.url);
+};
