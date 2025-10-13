@@ -1,20 +1,21 @@
-import Category from "./categorySchema.js";
+import { getDB } from "../../config/mongoConfig.js";
 
-// get all categories with parent-child mapping
 export const getAllCategories = async () => {
-  const allCategories = await Category.find();
+  const db = getDB();
+  const categories = await db
+    .collection("categories")
+    .find({ parent: null })
+    .toArray();
+  console.log(343, categories);
+  return categories;
+};
 
-  // separate parents and children
-  const parents = allCategories.filter((cat) => !cat.parent);
-  const children = allCategories.filter((cat) => cat.parent);
-
-  // attach children to their parent
-  const structuredCategories = parents.map((parent) => ({
-    ...parent._doc,
-    subcategories: children.filter(
-      (child) => String(child.parent) === String(parent._id)
-    ),
-  }));
-
-  return structuredCategories;
+export const getAllSubCategories = async () => {
+  const db = getDB();
+  const categories = await db
+    .collection("categories")
+    .find({ parent: { $ne: null } })
+    .toArray();
+  console.log(34, categories);
+  return categories;
 };
