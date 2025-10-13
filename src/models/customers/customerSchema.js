@@ -21,7 +21,6 @@ const customerSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["admin", "customer", "superadmin"],
       default: "customer",
     },
     phone: {
@@ -35,6 +34,10 @@ const customerSchema = new mongoose.Schema(
     verified: {
       type: Boolean,
       default: false,
+    },
+    phone: {
+      type: String,
+      required: true,
     },
   },
   {

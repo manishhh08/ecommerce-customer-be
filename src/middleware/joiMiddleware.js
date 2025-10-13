@@ -3,7 +3,7 @@ import Joi from "joi";
 const joiValidator = (schema, req, res, next) => {
   const { error } = schema.validate(req.body);
   error
-    ? res.json({
+    ? res.status(404).json({
         status: "error",
         message: error.message,
       })
@@ -30,6 +30,7 @@ export const createUserValidation = (req, res, next) => {
       .valid(Joi.ref("password"))
       .required()
       .messages({ "any.only": "Password doesn't match" }),
+    phone: Joi.string().required(),
   });
 
   joiValidator(createUserSchema, req, res, next);
