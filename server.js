@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import mongoConnect from "./src/config/mongoConfig.js";
+import { mongoConnect, mongooseConnect } from "./src/config/mongoConfig.js";
 import config from "./src/config/config.js";
 import authRouter from "./src/routes/authRouter.js";
 import customerRouter from "./src/routes/customerRouter.js";
@@ -29,6 +29,7 @@ app.use("/api/v1/category", categoryRouter);
 app.use("/api/v1/products", productRouter);
 
 mongoConnect()
+  .then(() => mongooseConnect())
   .then(() => {
     app.listen(config.port, (err) => {
       if (err) {
