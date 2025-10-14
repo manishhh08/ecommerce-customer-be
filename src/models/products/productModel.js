@@ -1,19 +1,11 @@
-import Product from "./productSchema.js";
+import { getDB } from "../../config/mongoConfig.js";
 
-export const addProduct = (productObj) => {
-  console.log("inside query func addproduct");
-  console.log(111, productObj);
-  return Product.create(productObj);
-};
-
-export const getAllProductsQuery = () => {
-  return Product.find();
-};
-
-export const updateProductQuery = (id, updateObj) => {
-  return Product.findByIdAndUpdate(id, updateObj);
-};
-
-export const deleteProductQuery = (id) => {
-  return Product.findByIdAndDelete(id);
+export const getAllActiveProducts = async () => {
+  const db = getDB();
+  const products = await db
+    .collection("products")
+    .find({ status: "active" })
+    .toArray();
+  console.log("Testing", products);
+  return products;
 };
