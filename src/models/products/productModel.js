@@ -6,5 +6,6 @@ export const getAllActiveProducts = async () => {
     .collection("products")
     .find({ status: "active" })
     .toArray();
+  console.log("Testing", products);
   return products;
 };
