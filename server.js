@@ -6,11 +6,8 @@ import authRouter from "./src/routes/authRouter.js";
 import customerRouter from "./src/routes/customerRouter.js";
 import paymentRoutes from "./src/routes/paymentRoutes.js";
 import categoryRouter from "./src/routes/categoryRouter.js";
-<<<<<<< HEAD
 import orderRouter from "./src/routes/orderRouter.js";
-=======
 import productRouter from "./src/routes/productRouter.js";
->>>>>>> 78bb6c48fb9400efc3274000bda29e815df63de7
 
 const app = express();
 app.use(cors());

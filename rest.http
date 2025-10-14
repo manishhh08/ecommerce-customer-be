@@ -79,3 +79,26 @@ Content-Type: application/json
 {
   "id": "68cfbe279b2684f7f1118e28"
 }
+
+#####
+#### Delete product
+POST {{apiURL}}/order
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RlckBnbWFpbC5jb20iLCJmbmFtZSI6IlRlc3QiLCJsbmFtZSI6InRlc3QiLCJyb2xlIjoiY3VzdG9tZXIiLCJpYXQiOjE3NjA0MzQwMzgsImV4cCI6MTc2MTAzODgzOH0.W8B8j1UgmYOUYDE6F4NoAycMWSsW-vwxTOvn3t_80-w
+
+{
+  "customerId": "68e45e91d2c77b22c1fa493e",
+  "items": [
+    {
+      "productId": "68edb97527e2ec70a80c6dd8",
+      "quantity": 2,
+      "price": 499.99
+    },
+    {
+      "productId": "68edb97527e2ec70a80c6dd9",
+      "quantity": 1,
+      "price": 299.99
+    }
+  ],
+  "total": 1299.97
+}
