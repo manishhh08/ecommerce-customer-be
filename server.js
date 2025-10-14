@@ -6,6 +6,7 @@ import authRouter from "./src/routes/authRouter.js";
 import customerRouter from "./src/routes/customerRouter.js";
 import paymentRoutes from "./src/routes/paymentRoutes.js";
 import categoryRouter from "./src/routes/categoryRouter.js";
+import orderRouter from "./src/routes/orderRouter.js";
 import productRouter from "./src/routes/productRouter.js";
 
 const app = express();
@@ -27,6 +28,7 @@ app.use("/api/v1/customer", customerRouter);
 app.use("/api/v1/payment", paymentRoutes);
 //category router
 app.use("/api/v1/category", categoryRouter);
+app.use("/api/v1/order", orderRouter);
 
 // Product router
 app.use("/api/v1/products", productRouter);

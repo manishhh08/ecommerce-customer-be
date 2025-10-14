@@ -5,12 +5,9 @@ import { decodeAccessToken } from "../utils/jwt.js";
 export const authMiddleware = async (req, res, next) => {
   try {
     const accessToken = req.headers.authorization;
-
     let decoded = decodeAccessToken(accessToken);
 
     let user = await findByFilter({ email: decoded.email });
-    console.log(user);
-
     if (user) {
       user.password = undefined;
       req.user = user;

@@ -1,11 +1,6 @@
 import { getDB } from "../../config/mongoConfig.js";
-
-export const getAllActiveProducts = async () => {
+export const getProductsByFilter = async (filter, sort = {}, limit) => {
   const db = getDB();
-  const products = await db
-    .collection("products")
-    .find({ status: "active" })
-    .toArray();
-  console.log("Testing", products);
+  const products = await db.collection("products").find(filter).toArray();
   return products;
 };
