@@ -81,7 +81,7 @@ Content-Type: application/json
 }
 
 #####
-#### Delete product
+#### place order
 POST {{apiURL}}/order
 Content-Type: application/json
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RlckBnbWFpbC5jb20iLCJmbmFtZSI6IlRlc3QiLCJsbmFtZSI6InRlc3QiLCJyb2xlIjoiY3VzdG9tZXIiLCJpYXQiOjE3NjA0MzQwMzgsImV4cCI6MTc2MTAzODgzOH0.W8B8j1UgmYOUYDE6F4NoAycMWSsW-vwxTOvn3t_80-w
@@ -89,16 +89,23 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RlckBnbWFp
 {
   "customerId": "68e45e91d2c77b22c1fa493e",
   "items": [
+    
     {
-      "productId": "68edb97527e2ec70a80c6dd8",
-      "quantity": 2,
-      "price": 499.99
-    },
-    {
-      "productId": "68edb97527e2ec70a80c6dd9",
+      "productId": "68edb97527e2ec70a80c6dde",
       "quantity": 1,
-      "price": 299.99
+      "price": 1500
     }
   ],
-  "total": 1299.97
+  "total":1500
 }
+
+
+#####
+#### get my all orders
+GET {{apiURL}}/order?id=68e45e91d2c77b22c1fa493e
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RlckBnbWFpbC5jb20iLCJmbmFtZSI6IlRlc3QiLCJsbmFtZSI6InRlc3QiLCJyb2xlIjoiY3VzdG9tZXIiLCJpYXQiOjE3NjA1MjIxMzcsImV4cCI6MTc2MTEyNjkzN30.jIVGPJUP7vgVRG0TBB_rMgTc1o-Td2tHg25VKU5zUEg
+
+###### get featured products
+GET {{apiURL}}/products/featured-products
+Content-Type: application/json
