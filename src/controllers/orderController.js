@@ -20,7 +20,7 @@ export const createNewOrder = async (req, res) => {
 export const getAllOrders = async (req, res) => {
   try {
     const { id } = req.query;
-    const orders = await fetchOrderByFilterQuery(id);
+    const orders = await fetchOrderByFilterQuery({ customerId: id });
     if (orders) {
       return res
         .status(200)
