@@ -31,7 +31,7 @@ export const getProductById = async (req, res) => {
   }
 };
 
-//recently added products not yet complete
+//recently added products not yet completeg
 export const getRecentlyAddedProducts = async (req, res) => {
   try {
     const products = await getProductsByFilter({ status: "active" });
