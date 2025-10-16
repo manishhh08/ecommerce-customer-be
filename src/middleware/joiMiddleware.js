@@ -72,7 +72,8 @@ export const deleteProductValidation = (req, res, next) => {
 };
 
 const orderItemSchema = Joi.object({
-  productId: Joi.string().required(), // validate ObjectId format if needed
+  productId: Joi.string().required(),
+  productName: Joi.string().required(),
   quantity: Joi.number().min(1).required(),
   price: Joi.number().min(0).required(),
 });
@@ -82,6 +83,8 @@ export const createOrderValidation = (req, res, next) => {
     customerId: Joi.string().required(),
     total: Joi.number().required(),
     items: Joi.array().items(orderItemSchema).min(1).required(),
+    currency: Joi.string().required(),
+    paymentIntentId: Joi.string().required(),
   });
 
   joiValidator(createOrderSchema, req, res, next);

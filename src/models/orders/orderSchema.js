@@ -6,6 +6,10 @@ const orderItemSchema = new mongoose.Schema({
     ref: "Product",
     required: true,
   },
+  productName: {
+    type: String,
+    required: true,
+  },
   quantity: {
     type: Number,
     required: true,
@@ -29,10 +33,19 @@ const orderSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    currency: {
+      type: String,
+      required: true,
+      default: "AUD",
+    },
+    paymentIntentId: {
+      type: String,
+      required: true,
+    },
     status: {
       type: String,
-      enum: ["Order recieved", "Shipped", "Delivered"],
-      default: "Order recieved",
+      enum: ["Order received", "Shipped", "Delivered"],
+      default: "Order received",
     },
     orderedDate: {
       type: Date,
