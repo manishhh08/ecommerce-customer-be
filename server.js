@@ -28,7 +28,7 @@ app.use("/api/v1/customer", customerRouter);
 app.use("/api/v1/payment", paymentRouter);
 //category router
 app.use("/api/v1/category", categoryRouter);
-app.use("/api/v1/order", orderRouter);
+app.use("/api/v1/orders", orderRouter);
 
 // Product router
 app.use("/api/v1/products", productRouter);
