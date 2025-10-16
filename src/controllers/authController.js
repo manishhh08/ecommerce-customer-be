@@ -1,3 +1,5 @@
+import config from "../config/config.js";
+import { emailFormatter, transporter } from "../config/nodemailer.js";
 import {
   findByFilter,
   newCustomer,
@@ -12,6 +14,15 @@ export const createNewCustomer = async (req, res) => {
 
     const randomString = uuidv4();
 
+    const verificationLink = `${config.frontend.domain}/verify?token=${randomString}`;
+    const formattedEmail = emailFormatter(
+      email,
+      "Verify your email",
+      "Just few more steps before you get the best tech deal!",
+      undefined,
+      verificationLink
+    );
+    const emailResult = await transporter.sendMail();
     const existingCustomer = await findByFilter({ email });
     if (existingCustomer) {
       return res.status(400).json({

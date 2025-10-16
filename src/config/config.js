@@ -14,6 +14,17 @@ const config = {
     refresh_secret: process.env.JWT_REFRESH_SECRET || "REFRESH-SECRET_KEY",
     refresh_expiresIn: process.env.JWT_REFRESH_EXPIRES_IN || "30d",
   },
+
+  nodemailer: {
+    host: process.env.NODEMAILER_HOST,
+    port: process.env.NODEMAILER_PORT,
+    user: process.env.NODEMAILER_USER,
+    pass: process.env.NODEMAILER_PASS,
+  },
+
+  frontend: {
+    domain: process.env.ROOT_DOMAIN,
+  },
 };
 
 export default config;
