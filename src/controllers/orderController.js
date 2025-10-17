@@ -5,14 +5,32 @@ import {
 
 export const createNewOrder = async (req, res) => {
   try {
-    const payload = req.body;
-    const order = await newOrder(payload);
-    if (order) {
+    const { customerId, items, total, currency, paymentIntentId } = req.body;
+
+    if (!customerId || !items || items.length === 0) {
       return res
-        .status(200)
-        .json({ status: "success", message: "Order placed successfully" });
+        .status(400)
+        .json({ status: "error", message: "Invalid order data" });
+    }
+
+    const order = await newOrder({
+      customerId,
+      items,
+      total,
+      currency,
+      paymentIntentId,
+      status: "Order received",
+    });
+
+    if (order) {
+      return res.status(200).json({
+        status: "success",
+        message: "Order placed successfully",
+        order,
+      });
     }
   } catch (error) {
+    console.error(error);
     res.status(500).json({ status: "error", message: "Internal Server Error" });
   }
 };
