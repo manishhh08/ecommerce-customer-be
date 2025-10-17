@@ -45,9 +45,10 @@ export const createNewCustomer = async (req, res) => {
       verificationToken: randomString,
     });
     if (user?._id) {
-      return res
-        .status(200)
-        .json({ status: "success", message: "Customer created successfully" });
+      return res.status(200).json({
+        status: "success",
+        message: "Account created. Please verify your email to Login.",
+      });
     } else {
       return res
         .status(500)
@@ -101,6 +102,15 @@ export const loginCustomer = async (req, res) => {
       return res
         .status(401)
         .json({ status: "error", message: "Invalid credentials" });
+    }
+
+    if (!user.isVerified) {
+      return res
+        .status(500)
+        .json({
+          status: "error",
+          message: "Please verify your email to Login",
+        });
     }
 
     const payload = {
