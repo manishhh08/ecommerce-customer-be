@@ -53,9 +53,16 @@ export const emailFormatter = (to, subject, name, verifyUrl = null) => {
         overflow: hidden;
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       ">
-        <div style="background-color: #ff6b35; padding: 15px 20px;">
-          <h2 style="color: white; margin: 0;">Electra Hub ⚡</h2>
-        </div>
+          <div style="text-align: center; background-color: rgba(0, 194, 255, 0.22); padding: 25px 20px;">
+          <img 
+            src="https://res.cloudinary.com/dlsiyrp36/image/upload/v1760704843/electrahub_mwxx9p.png" 
+            alt="Electra Hub Logo"
+            style="max-width: 120px; height: 50px; display: block; margin: 0 auto 10px;" 
+          />
+          <h2 style="color: #333; margin: 0; font-size: 22px; font-weight: 600;">
+            Electra Hub ⚡
+          </h2>
+        </div>  
         <div style="padding: 20px;">
           <p style="font-size: 16px; color: #333;">${greeting}</p>
           <p style="font-size: 15px; color: #555;">${introText}</p>

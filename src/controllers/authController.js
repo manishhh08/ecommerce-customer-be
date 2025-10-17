@@ -105,12 +105,10 @@ export const loginCustomer = async (req, res) => {
     }
 
     if (!user.isVerified) {
-      return res
-        .status(500)
-        .json({
-          status: "error",
-          message: "Please verify your email to Login",
-        });
+      return res.status(500).json({
+        status: "error",
+        message: "Please verify your email to Login",
+      });
     }
 
     const payload = {
