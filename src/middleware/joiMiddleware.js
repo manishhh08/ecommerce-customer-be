@@ -36,6 +36,15 @@ export const createUserValidation = (req, res, next) => {
   joiValidator(createUserSchema, req, res, next);
 };
 
+export const verifyUserValidation = (req, res, next) => {
+  let verifyUserSchema = Joi.object({
+    token: Joi.string().required(),
+    email: Joi.string().required(),
+  });
+
+  joiValidator(verifyUserSchema, req, res, next);
+};
+
 export const addProductValidation = (req, res, next) => {
   let createProductSchema = Joi.object({
     name: Joi.string().required(),
