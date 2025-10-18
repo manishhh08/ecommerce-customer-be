@@ -57,6 +57,7 @@ export const getFeaturedProducts = async (req, res) => {
       status: "success",
       recentlyAddedProducts,
       bestSellerProducts,
+      message: "Featured products fetched",
     });
   } catch (error) {
     console.error("Failed to fetch products:", error);
