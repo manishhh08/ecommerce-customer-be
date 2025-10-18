@@ -4,7 +4,7 @@ export const newOrder = (orderObject) => {
   return Order.create(orderObject);
 };
 export const fetchOrderByFilterQuery = (filter) => {
-  return Order.find(filter);
+  return Order.find(filter).sort({ createdAt: -1 });
 };
 
 export const findByFilter = (filterObj) => {
