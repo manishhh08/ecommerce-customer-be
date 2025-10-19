@@ -1,14 +1,16 @@
 @apiURL = http://localhost:4001/api/v1
-
+#####create new user
 ####
-POST {{apiURL}}/auth
+POST {{apiURL}}/auth/register
 Content-Type: application/json
 
 {
   "fname": "deepgh",
   "lname": "deepgh",
   "email": "deepgh@gmail.com",
-  "password": "1234"
+  "phone": "0451812",
+  "password": "1234",
+  "cpassword": "1234"
 }
 
 
@@ -79,3 +81,33 @@ Content-Type: application/json
 {
   "id": "68cfbe279b2684f7f1118e28"
 }
+
+#####
+#### place order
+POST {{apiURL}}/order
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RlckBnbWFpbC5jb20iLCJmbmFtZSI6IlRlc3QiLCJsbmFtZSI6InRlc3QiLCJyb2xlIjoiY3VzdG9tZXIiLCJpYXQiOjE3NjA0MzQwMzgsImV4cCI6MTc2MTAzODgzOH0.W8B8j1UgmYOUYDE6F4NoAycMWSsW-vwxTOvn3t_80-w
+
+{
+  "customerId": "68e45e91d2c77b22c1fa493e",
+  "items": [
+    
+    {
+      "productId": "68edb97527e2ec70a80c6dde",
+      "quantity": 1,
+      "price": 1500
+    }
+  ],
+  "total":1500
+}
+
+
+#####
+#### get my all orders
+GET {{apiURL}}/order?id=68e45e91d2c77b22c1fa493e
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RlckBnbWFpbC5jb20iLCJmbmFtZSI6IlRlc3QiLCJsbmFtZSI6InRlc3QiLCJyb2xlIjoiY3VzdG9tZXIiLCJpYXQiOjE3NjA1MjIxMzcsImV4cCI6MTc2MTEyNjkzN30.jIVGPJUP7vgVRG0TBB_rMgTc1o-Td2tHg25VKU5zUEg
+
+###### get featured products
+GET {{apiURL}}/products/featured-products
+Content-Type: application/json

@@ -31,13 +31,16 @@ const customerSchema = new mongoose.Schema(
     image: {
       type: String,
     },
-    verified: {
-      type: Boolean,
-      default: false,
-    },
     phone: {
       type: String,
       required: true,
+    },
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+    verificationToken: {
+      type: String,
     },
   },
   {

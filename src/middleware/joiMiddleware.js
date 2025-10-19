@@ -36,6 +36,15 @@ export const createUserValidation = (req, res, next) => {
   joiValidator(createUserSchema, req, res, next);
 };
 
+export const verifyUserValidation = (req, res, next) => {
+  let verifyUserSchema = Joi.object({
+    token: Joi.string().required(),
+    email: Joi.string().required(),
+  });
+
+  joiValidator(verifyUserSchema, req, res, next);
+};
+
 export const addProductValidation = (req, res, next) => {
   let createProductSchema = Joi.object({
     name: Joi.string().required(),
@@ -69,4 +78,23 @@ export const deleteProductValidation = (req, res, next) => {
   });
 
   joiValidator(updateProductSchema, req, res, next);
+};
+
+const orderItemSchema = Joi.object({
+  productId: Joi.string().required(),
+  productName: Joi.string().required(),
+  quantity: Joi.number().min(1).required(),
+  price: Joi.number().min(0).required(),
+});
+
+export const createOrderValidation = (req, res, next) => {
+  let createOrderSchema = Joi.object({
+    customerId: Joi.string().required(),
+    total: Joi.number().required(),
+    items: Joi.array().items(orderItemSchema).min(1).required(),
+    currency: Joi.string().required(),
+    paymentIntentId: Joi.string().required(),
+  });
+
+  joiValidator(createOrderSchema, req, res, next);
 };

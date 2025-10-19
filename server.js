@@ -4,8 +4,9 @@ import { mongoConnect, mongooseConnect } from "./src/config/mongoConfig.js";
 import config from "./src/config/config.js";
 import authRouter from "./src/routes/authRouter.js";
 import customerRouter from "./src/routes/customerRouter.js";
-import paymentRoutes from "./src/routes/paymentRoutes.js";
+import paymentRouter from "./src/routes/paymentRouter.js";
 import categoryRouter from "./src/routes/categoryRouter.js";
+import orderRouter from "./src/routes/orderRouter.js";
 import productRouter from "./src/routes/productRouter.js";
 
 const app = express();
@@ -24,9 +25,10 @@ app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/customer", customerRouter);
 
 //stripe route
-app.use("/api/v1/payment", paymentRoutes);
+app.use("/api/v1/payment", paymentRouter);
 //category router
 app.use("/api/v1/category", categoryRouter);
+app.use("/api/v1/orders", orderRouter);
 
 // Product router
 app.use("/api/v1/products", productRouter);
