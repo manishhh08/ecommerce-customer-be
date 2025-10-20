@@ -32,7 +32,7 @@ export const getProductById = async (req, res) => {
   }
 };
 
-//recently added products not yet completeg
+//recently added products not yet complete
 export const getFeaturedProducts = async (req, res) => {
   try {
     const recentlyAddedProducts = await getProductsByFilter(
@@ -66,4 +66,29 @@ export const getFeaturedProducts = async (req, res) => {
       message: "Failed to fetch products",
     });
   }
+};
+
+export const getProductsBySubCategoryandCategory = async (
+  categorySlug,
+  subCategorySlug
+) => {
+  const db = getDB();
+  const products = await db
+    .collection("products")
+    .aggregate([
+      { $match: { subCategory: subCategorySlug } },
+      {
+        $lookup: {
+          from: "categories",
+          localField: "category",
+          foreignField: "_id",
+          as: "categoryDetails",
+        },
+      },
+      { $unwind: "$categoryDetails" },
+      { $match: { "categoryDetails.slug": categorySlug } },
+    ])
+    .toArray();
+
+  return products;
 };
