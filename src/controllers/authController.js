@@ -126,13 +126,7 @@ export const loginCustomer = async (req, res) => {
       message: "Login Successful",
       accessToken,
       refreshToken,
-      customer: {
-        _id: user._id,
-        fname: user.fname,
-        lname: user.lname,
-        email: user.email,
-        role: user.role || "customer",
-      },
+      customer: user,
     });
   } catch (error) {
     console.error("Login Error:", error);
