@@ -13,7 +13,7 @@ export const getCustomerDetail = (req, res) => {
     return res.json({
       status: "success",
       message: "User details fetched successfully",
-      user,
+      customer: user,
     });
   } catch (error) {
     return res.status(500).json({
@@ -25,18 +25,16 @@ export const getCustomerDetail = (req, res) => {
 
 export const updateCustomerDetail = async (req, res) => {
   try {
-    const userId = req.user?._id;
-    const update = req.body;
-    console.log(update);
+    const customerId = req.user?._id;
+    const updateObj = req.body;
 
-    if (!user) {
+    if (!customerId) {
       return res.status(404).json({
         status: "error",
         message: "User not found!",
       });
     }
-    const updatedUser = await updateById(userId, update, { new: true });
-    console.log(updatedUser);
+    const updatedUser = await updateById(customerId, updateObj, { new: true });
 
     return res.json({
       status: "success",
