@@ -17,3 +17,24 @@ export const getAllSubCategories = async () => {
     .toArray();
   return categories;
 };
+
+export const getProductDetails = async (filter) => {
+  const db = getDB();
+  const products = await db
+    .collection("categories")
+    .aggregate([
+      { $match: filter },
+      {
+        $lookup: {
+          from: "products",
+          localField: "products",
+          foreignField: "_id",
+          as: "productDetails",
+        },
+      },
+      { $unwind: "$productDetails" },
+      { $replaceRoot: { newRoot: "$productDetails" } },
+    ])
+    .toArray();
+  return products;
+};

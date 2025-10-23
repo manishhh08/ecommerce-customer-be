@@ -111,3 +111,8 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RlckBnbWFp
 ###### get featured products
 GET {{apiURL}}/products/featured-products
 Content-Type: application/json
+
+
+###### get product details of subcategory
+GET {{apiURL}}/category/vlogging
+Content-Type: application/json
