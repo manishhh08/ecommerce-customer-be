@@ -16,7 +16,7 @@ export const findByFilter = (filterObj) => {
 };
 
 export const updateById = (customerId, updateObj) => {
-  return Customer.findByIdAndUpdate(customerId, updateObj);
+  return Customer.findByIdAndUpdate(customerId, updateObj, { new: true });
 };
 
 export const deleteById = (customerId) => {

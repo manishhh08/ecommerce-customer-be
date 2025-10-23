@@ -21,13 +21,16 @@ app.get("/", (req, res) => {
 // auth router
 app.use("/api/v1/auth", authRouter);
 
-//user routes
+// user routes
 app.use("/api/v1/customer", customerRouter);
 
-//stripe route
+// stripe route
 app.use("/api/v1/payment", paymentRouter);
-//category router
+
+// category router
 app.use("/api/v1/category", categoryRouter);
+
+// order router
 app.use("/api/v1/orders", orderRouter);
 
 // Product router
