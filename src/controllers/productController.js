@@ -67,28 +67,3 @@ export const getFeaturedProducts = async (req, res) => {
     });
   }
 };
-
-export const getProductsBySubCategoryandCategory = async (
-  categorySlug,
-  subCategorySlug
-) => {
-  const db = getDB();
-  const products = await db
-    .collection("products")
-    .aggregate([
-      { $match: { subCategory: subCategorySlug } },
-      {
-        $lookup: {
-          from: "categories",
-          localField: "category",
-          foreignField: "_id",
-          as: "categoryDetails",
-        },
-      },
-      { $unwind: "$categoryDetails" },
-      { $match: { "categoryDetails.slug": categorySlug } },
-    ])
-    .toArray();
-
-  return products;
-};
