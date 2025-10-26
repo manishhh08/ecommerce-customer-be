@@ -1,4 +1,5 @@
 import { newReview } from "../models/reviews/reviewModel.js";
+import Review from "../models/reviews/reviewSchema.js";
 
 // ===== CREATE A REVIEW =====
 export const createReview = async (req, res) => {
@@ -31,22 +32,43 @@ export const createReview = async (req, res) => {
   }
 };
 
-// ===== FETCH ALL REVIEWS (ADMIN OR PRIVATE) =====
-export const getAllReviews = async (req, res) => {
-  try {
-    const reviews = await Review.find()
-      .populate("productId", "name")
-      .populate("customerId", "name email");
-    res.json({ status: "success", data: reviews });
-  } catch (error) {
-    res.status(500).json({ status: "error", message: error.message });
-  }
-};
+// ✅ Get all active reviews for a single product
+// export const getReviewsByProduct = async (req, res) => {
+//   try {
+//     const { productId } = req.params;
 
-// ===== FETCH PUBLIC REVIEWS (FOR PRODUCTS PAGE) =====
-export const getPublicReviews = async (req, res) => {
+//     // Find all reviews for this product that are active
+//     const reviews = await Review.find({
+//       productId,
+//       status: "active",
+//     })
+//       .select("title comment rating createdAt") // only include needed fields
+//       .sort({ createdAt: -1 });
+
+//     res.json({
+//       status: "success",
+//       data: reviews,
+//     });
+//   } catch (error) {
+//     res.status(500).json({
+//       status: "error",
+//       message: error.message,
+//     });
+//   }
+// };
+
+export const getReviewsByProduct = async (req, res) => {
   try {
-    const reviews = await Review.find().populate("productId", "name");
+    const { productId } = req.params;
+
+    const reviews = await Review.find({
+      productId,
+      status: "active",
+    })
+      .populate("customerId", "fname lname") // ⬅️ add this
+      .select("title comment rating createdAt customerId") // ⬅️ include customerId in output
+      .sort({ createdAt: -1 });
+
     res.json({ status: "success", data: reviews });
   } catch (error) {
     res.status(500).json({ status: "error", message: error.message });
