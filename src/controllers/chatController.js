@@ -1,4 +1,3 @@
-// backend/src/controllers/chatController.js
 import pkg from "@google-ai/generativelanguage";
 import config from "../config/config.js";
 
@@ -12,6 +11,7 @@ const client = new TextServiceClient({
 export const chatResponse = async (req, res) => {
   const { message } = req.body;
   console.log("message:", message);
+  console.log("apikey", config.chatbot.apikey);
 
   if (!message || !message.trim()) {
     return res.status(400).json({ error: "Message cannot be empty" });
@@ -23,8 +23,8 @@ export const chatResponse = async (req, res) => {
       prompt: {
         text: message, // ✅ plain string, not { message }
       },
-      temperature: 0.7,
-      maxOutputTokens: 512,
+      //   temperature: 0.7,
+      //   maxOutputTokens: 512,
     });
     console.log("result::", result);
     const reply =
