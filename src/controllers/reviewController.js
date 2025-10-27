@@ -7,7 +7,7 @@ export const createReview = async (req, res) => {
     const { productId, title, rating, comment } = req.body;
     const customerId = req.user._id; // from auth middleware
 
-    if (!title || !rating || !comment) {
+    if (!productId || !title || !rating || !comment) {
       return res
         .status(400)
         .json({ status: "error", message: "All fields required" });
