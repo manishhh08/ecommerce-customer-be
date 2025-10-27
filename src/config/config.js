@@ -25,6 +25,9 @@ const config = {
   frontend: {
     domain: process.env.ROOT_DOMAIN,
   },
+  chatbot: {
+    apikey: process.env.GEMINI_API_KEY,
+  },
 };
 
 export default config;
