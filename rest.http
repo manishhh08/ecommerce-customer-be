@@ -126,3 +126,6 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlZXBnaEBnbWFp
   "rating":2,
   "comment":"Awesome phone"
 }
+###### get product details of subcategory
+GET {{apiURL}}/category/vlogging
+Content-Type: application/json
