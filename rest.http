@@ -84,21 +84,23 @@ Content-Type: application/json
 
 #####
 #### place order
-POST {{apiURL}}/order
+POST {{apiURL}}/orders
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RlckBnbWFpbC5jb20iLCJmbmFtZSI6IlRlc3QiLCJsbmFtZSI6InRlc3QiLCJyb2xlIjoiY3VzdG9tZXIiLCJpYXQiOjE3NjA0MzQwMzgsImV4cCI6MTc2MTAzODgzOH0.W8B8j1UgmYOUYDE6F4NoAycMWSsW-vwxTOvn3t_80-w
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlZXBnaEBnbWFpbC5jb20iLCJsbmFtZSI6ImRlZXBnaCIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc2MTAwNjY5OSwiZXhwIjoxNzYxNjExNDk5fQ.DA9poQwQzoaasaufuS1BlLMBMVYzXo6JMYykV0wctuA
 
 {
-  "customerId": "68e45e91d2c77b22c1fa493e",
+  "customerId": "68e3ae95b4f266fd9bec046f",
   "items": [
     
     {
-      "productId": "68edb97527e2ec70a80c6dde",
-      "quantity": 1,
-      "price": 1500
+      "productId": "68f089010723bca18e2b373e",
+      "productName":"Macbook",
+      "quantity":2,
+      "price": 2400,
+      "currency":"AUD"
     }
   ],
-  "total":1500
+  "total":2400
 }
 
 
@@ -113,6 +115,17 @@ GET {{apiURL}}/products/featured-products
 Content-Type: application/json
 
 
+### send review
+POST {{apiURL}}/reviews
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlZXBnaEBnbWFpbC5jb20iLCJsbmFtZSI6ImRlZXBnaCIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc2MTAwNzEwMiwiZXhwIjoxNzYxNjExOTAyfQ.lLsu005ql3t4mUcMQxElqIDtcOcB166inXpYaH4Qyfw
+
+{
+  "productId":"68f095ba7ecf14b3cef72a2b",
+  "title":"Nice kkkkkkkkk phone",
+  "rating":2,
+  "comment":"Awesome phone"
+}
 ###### get product details of subcategory
 GET {{apiURL}}/category/vlogging
 Content-Type: application/json
