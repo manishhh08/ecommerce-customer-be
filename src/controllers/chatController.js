@@ -1,12 +1,8 @@
-import pkg from "@google-ai/generativelanguage";
+import { GoogleGenAI } from "@google/genai";
+
 import config from "../config/config.js";
 
-const { TextServiceClient } = pkg;
-
-// Initialize Gemini client
-const client = new TextServiceClient({
-  apiKey: config.chatbot.apikey,
-});
+const ai = new GoogleGenAI({ apiKey: config.chatbot.apikey });
 
 export const chatResponse = async (req, res) => {
   const { message } = req.body;
@@ -18,21 +14,20 @@ export const chatResponse = async (req, res) => {
   }
 
   try {
-    const result = await client.generateText({
-      model: "models/text-bison-001", // ✅ Supported public model
-      prompt: {
-        text: message, // ✅ plain string, not { message }
-      },
-      //   temperature: 0.7,
-      //   maxOutputTokens: 512,
+    const result = await ai.models.generateContent({
+      model: "gemini-2.0-flash",
+      contents: message,
     });
-    console.log("result::", result);
-    const reply =
-      result?.candidates?.[0]?.output || "I'm sorry, I didn’t get that.";
+    const responseText = result.candidates[0].content.parts
+      .map((p) => p.text)
+      .join("");
+    console.log("Response:", responseText);
+
+    return;
 
     res.json({ output: reply });
   } catch (err) {
-    console.error("Gemini chatbot error:", err);
+    console.error("Gemini chatbot error:", err.message);
     res.status(500).json({ error: "Chatbot request failed" });
   }
 };
