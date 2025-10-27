@@ -5,12 +5,12 @@ POST {{apiURL}}/auth/register
 Content-Type: application/json
 
 {
-  "fname": "deepgh",
-  "lname": "deepgh",
-  "email": "deepgh@gmail.com",
-  "phone": "0451812",
-  "password": "1234",
-  "cpassword": "1234"
+  "fname": "prasika",
+  "lname": "adhikari",
+  "email": "prasika@gmail.com",
+  "phone": "1234567",
+  "password": "12345",
+  "cpassword": "12345"
 }
 
 
@@ -20,8 +20,8 @@ POST {{apiURL}}/auth/login
 Content-Type: application/json
 
 {
-  "email": "deepgh@gmail.com", 
-  "password": "1234"
+  "email": "prasika@gmail.com", 
+  "password": "12345"
 
 }
 

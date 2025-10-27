@@ -11,12 +11,12 @@ export const mongoConnect = async () => {
     const client = new MongoClient(config.mongoOptions.url);
     await client.connect();
 
-    console.log("✅ Connected to MongoDB");
+    console.log("Connected to MongoDB");
 
     db = client.db();
     return db;
   } catch (err) {
-    console.error("❌ MongoDB connection error:", err);
+    console.error(" MongoDB connection error:", err);
     throw err;
   }
 };

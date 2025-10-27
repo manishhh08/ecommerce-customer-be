@@ -32,7 +32,7 @@ export const fetchAllProducts = async (req, res) => {
 //   }
 // };
 
-//recently added products not yet completeg
+//recently added products not yet complete
 export const getFeaturedProducts = async (req, res) => {
   try {
     const recentlyAddedProducts = await getProductsByFilter(
