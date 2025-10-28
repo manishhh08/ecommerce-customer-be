@@ -42,6 +42,18 @@ const customerSchema = new mongoose.Schema(
     verificationToken: {
       type: String,
     },
+    recentViewedProducts: [
+      {
+        productId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Product",
+        },
+        viewedAt: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
   },
   {
     timestamps: true,

@@ -19,6 +19,14 @@ const orderItemSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  isReviewed: {
+    type: Boolean,
+    default: false,
+  },
+  reviewId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Review",
+  },
 });
 
 const orderSchema = new mongoose.Schema(

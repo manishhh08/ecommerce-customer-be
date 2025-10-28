@@ -1,6 +1,6 @@
-import axios from "axios";
 import { getProductsByFilter } from "../models/products/productModel.js";
 import { getMostPopularProducts } from "../models/orders/orderModel.js";
+import { getDB } from "../config/mongoConfig.js";
 
 export const fetchAllProducts = async (req, res) => {
   try {
@@ -65,5 +65,100 @@ export const getFeaturedProducts = async (req, res) => {
       status: "error",
       message: "Failed to fetch products",
     });
+  }
+};
+
+export const getTopRatedProductsWithReviews = async (req, res) => {
+  try {
+    const db = getDB();
+
+    const topProducts = await db
+      .collection("products")
+      .aggregate([
+        { $match: { status: "active" } },
+        { $limit: 10 },
+
+        {
+          $lookup: {
+            from: "reviews",
+            localField: "_id",
+            foreignField: "productId",
+            as: "reviews",
+          },
+        },
+
+        // Filter reviews with rating > 3
+        {
+          $addFields: {
+            reviews: {
+              $filter: {
+                input: "$reviews",
+                as: "rev",
+                cond: { $gt: ["$$rev.rating", 3] },
+              },
+            },
+          },
+        },
+
+        // Lookup customer for each review
+        {
+          $lookup: {
+            from: "customers",
+            localField: "reviews.customerId",
+            foreignField: "_id",
+            as: "customers",
+          },
+        },
+
+        // Attach customer to each review
+        {
+          $addFields: {
+            reviews: {
+              $map: {
+                input: "$reviews",
+                as: "rev",
+                in: {
+                  _id: "$$rev._id",
+                  title: "$$rev.title",
+                  rating: "$$rev.rating",
+                  comment: "$$rev.comment",
+                  customer: {
+                    $arrayElemAt: [
+                      {
+                        $filter: {
+                          input: "$customers",
+                          as: "c",
+                          cond: { $eq: ["$$c._id", "$$rev.customerId"] },
+                        },
+                      },
+                      0,
+                    ],
+                  },
+                },
+              },
+            },
+          },
+        },
+
+        { $project: { customers: 0 } },
+
+        // Sort reviews by rating descending
+        {
+          $addFields: {
+            reviews: {
+              $slice: [
+                { $sortArray: { input: "$reviews", sortBy: { rating: -1 } } },
+                5,
+              ],
+            },
+          },
+        },
+      ])
+      .toArray();
+
+    res.status(200).json({ status: "success", data: topProducts });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ status: "error", message: "Server error" });
   }
 };
