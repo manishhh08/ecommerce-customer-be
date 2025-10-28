@@ -75,11 +75,9 @@ export const getTopRatedProductsWithReviews = async (req, res) => {
     const topProducts = await db
       .collection("products")
       .aggregate([
-        { $match: { status: "active", averageRating: { $gt: 0 } } },
-        { $sort: { averageRating: -1 } },
-        { $limit: 5 },
+        { $match: { status: "active" } },
+        { $limit: 10 },
 
-        // Lookup reviews
         {
           $lookup: {
             from: "reviews",
@@ -89,8 +87,18 @@ export const getTopRatedProductsWithReviews = async (req, res) => {
           },
         },
 
-        // Unwind reviews so we can sort
-        { $unwind: { path: "$reviews", preserveNullAndEmptyArrays: true } },
+        // Filter reviews with rating > 3
+        {
+          $addFields: {
+            reviews: {
+              $filter: {
+                input: "$reviews",
+                as: "rev",
+                cond: { $gt: ["$$rev.rating", 3] },
+              },
+            },
+          },
+        },
 
         // Lookup customer for each review
         {
@@ -98,36 +106,51 @@ export const getTopRatedProductsWithReviews = async (req, res) => {
             from: "customers",
             localField: "reviews.customerId",
             foreignField: "_id",
-            as: "customer",
+            as: "customers",
           },
         },
 
-        // Flatten customer array
+        // Attach customer to each review
         {
           $addFields: {
-            "reviews.customer": { $arrayElemAt: ["$customer", 0] },
+            reviews: {
+              $map: {
+                input: "$reviews",
+                as: "rev",
+                in: {
+                  _id: "$$rev._id",
+                  title: "$$rev.title",
+                  rating: "$$rev.rating",
+                  comment: "$$rev.comment",
+                  customer: {
+                    $arrayElemAt: [
+                      {
+                        $filter: {
+                          input: "$customers",
+                          as: "c",
+                          cond: { $eq: ["$$c._id", "$$rev.customerId"] },
+                        },
+                      },
+                      0,
+                    ],
+                  },
+                },
+              },
+            },
           },
         },
 
-        { $project: { customer: 0 } },
+        { $project: { customers: 0 } },
 
-        // Sort reviews per product by rating descending
-        { $sort: { "reviews.rating": -1 } },
-
-        // Group back to product level, limit reviews to top 4
-        {
-          $group: {
-            _id: "$_id",
-            name: { $first: "$name" },
-            averageRating: { $first: "$averageRating" },
-            price: { $first: "$price" },
-            status: { $first: "$status" },
-            reviews: { $push: "$reviews" },
-          },
-        },
+        // Sort reviews by rating descending
         {
           $addFields: {
-            reviews: { $slice: ["$reviews", 4] }, // top 4 reviews
+            reviews: {
+              $slice: [
+                { $sortArray: { input: "$reviews", sortBy: { rating: -1 } } },
+                5,
+              ],
+            },
           },
         },
       ])

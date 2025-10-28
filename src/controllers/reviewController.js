@@ -14,13 +14,6 @@ export const createReview = async (req, res) => {
         .status(400)
         .json({ status: "error", message: "All fields required" });
     }
-    // const mongooseId = (id) => new mongoose.Types.ObjectId(id);
-
-    // const existingReview = await previousReview({
-    //   productId: new mongoose.Types.ObjectId(productId),
-    //   customerId: new mongoose.Types.ObjectId(customerId),
-    //   orderId: new mongoose.Types.ObjectId(orderId),
-    // });
 
     const reviewObj = {
       customerId: new mongoose.Types.ObjectId(customerId),
