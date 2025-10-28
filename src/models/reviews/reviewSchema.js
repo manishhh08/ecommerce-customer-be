@@ -4,12 +4,17 @@ const reviewSchema = new mongoose.Schema(
   {
     productId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Product", // ✅ matches your Product model name
+      ref: "Product",
       required: true,
     },
     customerId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Customer", // ✅ matches your Customer model name
+      ref: "Customer",
+      required: true,
+    },
+    orderId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Order",
       required: true,
     },
     title: {
@@ -34,6 +39,11 @@ const reviewSchema = new mongoose.Schema(
     },
   },
   { timestamps: true }
+);
+// allows one review per product per order
+reviewSchema.index(
+  { productId: 1, customerId: 1, orderId: 1 },
+  { unique: true }
 );
 
 export default mongoose.model("Review", reviewSchema);

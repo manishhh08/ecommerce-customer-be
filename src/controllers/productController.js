@@ -78,6 +78,8 @@ export const getTopRatedProductsWithReviews = async (req, res) => {
         { $match: { status: "active", averageRating: { $gt: 0 } } },
         { $sort: { averageRating: -1 } },
         { $limit: 5 },
+
+        // Lookup reviews
         {
           $lookup: {
             from: "reviews",
@@ -86,45 +88,46 @@ export const getTopRatedProductsWithReviews = async (req, res) => {
             as: "reviews",
           },
         },
+
+        // Unwind reviews so we can sort
+        { $unwind: { path: "$reviews", preserveNullAndEmptyArrays: true } },
+
+        // Lookup customer for each review
         {
           $lookup: {
             from: "customers",
             localField: "reviews.customerId",
             foreignField: "_id",
-            as: "customers",
+            as: "customer",
+          },
+        },
+
+        // Flatten customer array
+        {
+          $addFields: {
+            "reviews.customer": { $arrayElemAt: ["$customer", 0] },
+          },
+        },
+
+        { $project: { customer: 0 } },
+
+        // Sort reviews per product by rating descending
+        { $sort: { "reviews.rating": -1 } },
+
+        // Group back to product level, limit reviews to top 4
+        {
+          $group: {
+            _id: "$_id",
+            name: { $first: "$name" },
+            averageRating: { $first: "$averageRating" },
+            price: { $first: "$price" },
+            status: { $first: "$status" },
+            reviews: { $push: "$reviews" },
           },
         },
         {
           $addFields: {
-            reviews: {
-              $map: {
-                input: "$reviews",
-                as: "rev",
-                in: {
-                  _id: "$$rev._id",
-                  title: "$$rev.title",
-                  rating: "$$rev.rating",
-                  comment: "$$rev.comment",
-                  customer: {
-                    $arrayElemAt: [
-                      {
-                        $filter: {
-                          input: "$customers",
-                          as: "c",
-                          cond: { $eq: ["$$c._id", "$$rev.customerId"] },
-                        },
-                      },
-                      0,
-                    ],
-                  },
-                },
-              },
-            },
-          },
-        },
-        {
-          $project: {
-            customers: 0, // remove the temporary customers array
+            reviews: { $slice: ["$reviews", 4] }, // top 4 reviews
           },
         },
       ])
