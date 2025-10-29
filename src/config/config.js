@@ -28,6 +28,11 @@ const config = {
   chatbot: {
     apikey: process.env.GEMINI_API_KEY,
   },
+  mailchimp: {
+    mailapikey: process.env.MAILCHIMP_API_KEY,
+    mailserver: process.env.MAILCHIMP_SERVER_PREFIX,
+    aid: process.env.MAILCHIMP_AUDIENCE_ID,
+  },
 };
 
 export default config;

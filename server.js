@@ -10,6 +10,7 @@ import orderRouter from "./src/routes/orderRouter.js";
 import productRouter from "./src/routes/productRouter.js";
 import chatRouter from "./src/routes/chatRouter.js";
 import reviewRouter from "./src/routes/reviewRouter.js";
+import subscribeRouter from "./src/routes/subscribeRouter.js";
 
 const app = express();
 app.use(cors());
@@ -41,12 +42,11 @@ app.use("/api/v1/products", productRouter);
 //Review Router
 app.use("/api/v1/reviews", reviewRouter);
 
-// TODO:
-// route for mail chimp
-//  route for chatgpt for ai
 // chatbot router
 app.use("/api/v1/chat", chatRouter);
 
+// mailchimp router
+app.use("/api/v1/subscribe", subscribeRouter);
 mongoConnect()
   .then(() => mongooseConnect())
   .then(() => {
