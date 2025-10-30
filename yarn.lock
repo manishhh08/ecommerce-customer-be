@@ -9,6 +9,14 @@
   dependencies:
     google-gax "^5.0.0"
 
+"@google/genai@^1.27.0":
+  version "1.27.0"
+  resolved "https://registry.yarnpkg.com/@google/genai/-/genai-1.27.0.tgz#0ad7b3d9436b280560556163cdabfa9aae048f21"
+  integrity sha512-sveeQqwyzO/U5kOjo3EflF1rf7v0ZGprrjPGmeT6V5u22IUTcA4wBFxW+q1n7hOX0M1iWR3944MImoNPOM+zsA==
+  dependencies:
+    google-auth-library "^10.3.0"
+    ws "^8.18.0"
+
 "@google/generative-ai@^0.24.1":
   version "0.24.1"
   resolved "https://registry.npmjs.org/@google/generative-ai/-/generative-ai-0.24.1.tgz"
@@ -603,7 +611,7 @@ get-proto@^1.0.1:
     dunder-proto "^1.0.1"
     es-object-atoms "^1.0.0"
 
-google-auth-library@^10.1.0:
+google-auth-library@^10.1.0, google-auth-library@^10.3.0:
   version "10.4.2"
   resolved "https://registry.npmjs.org/google-auth-library/-/google-auth-library-10.4.2.tgz"
   integrity sha512-EKiQasw6aEdxSovPEf1oBxCEvxjFamZ6MPaVOSPXZMnqKFLo+rrYjHyjKlFfZcXiKi9qAH6cutr5WRqqa1jKhg==
@@ -1371,6 +1379,11 @@ wrappy@1:
   version "1.0.2"
   resolved "https://registry.npmjs.org/wrappy/-/wrappy-1.0.2.tgz"
   integrity sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==
+
+ws@^8.18.0:
+  version "8.18.3"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-8.18.3.tgz#b56b88abffde62791c639170400c93dcb0c95472"
+  integrity sha512-PEIGCY5tSlUt50cqyMXfCzX+oOPqN0vuGqWzbcJ2xvnkzkq46oOpz7dQaTDBdfICb4N14+GARUDw2XV2N4tvzg==
 
 y18n@^5.0.5:
   version "5.0.8"
