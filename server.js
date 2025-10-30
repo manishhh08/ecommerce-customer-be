@@ -15,7 +15,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+app.use("/api/auth", authRouter);
 app.get("/", (req, res) => {
   res.send("I am Customer Front End");
 });
