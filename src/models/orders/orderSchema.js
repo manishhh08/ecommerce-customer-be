@@ -19,6 +19,14 @@ const orderItemSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  isReviewed: {
+    type: Boolean,
+    default: false,
+  },
+  reviewId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Review",
+  },
 });
 
 const orderSchema = new mongoose.Schema(
@@ -31,6 +39,10 @@ const orderSchema = new mongoose.Schema(
     items: [orderItemSchema], // <-- array of items
     total: {
       type: Number,
+      required: true,
+    },
+    address: {
+      type: String,
       required: true,
     },
     currency: {
