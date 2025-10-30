@@ -7,7 +7,6 @@ import Review from "../models/reviews/reviewSchema.js";
 export const createReview = async (req, res) => {
   try {
     const { productId, title, rating, comment, orderId } = req.body;
-    console.log("pid", productId);
     const customerId = req.user._id;
     if (!productId || !title || !rating || !comment || !orderId) {
       return res
@@ -62,31 +61,6 @@ export const createReview = async (req, res) => {
   }
 };
 
-// ✅ Get all active reviews for a single product
-// export const getReviewsByProduct = async (req, res) => {
-//   try {
-//     const { productId } = req.params;
-
-//     // Find all reviews for this product that are active
-//     const reviews = await Review.find({
-//       productId,
-//       status: "active",
-//     })
-//       .select("title comment rating createdAt") // only include needed fields
-//       .sort({ createdAt: -1 });
-
-//     res.json({
-//       status: "success",
-//       data: reviews,
-//     });
-//   } catch (error) {
-//     res.status(500).json({
-//       status: "error",
-//       message: error.message,
-//     });
-//   }
-// };
-
 export const getReviewsByProduct = async (req, res) => {
   try {
     const { productId } = req.params;
@@ -95,8 +69,8 @@ export const getReviewsByProduct = async (req, res) => {
       productId,
       status: "active",
     })
-      .populate("customerId", "fname lname") // ⬅️ add this
-      .select("title comment rating createdAt customerId") // ⬅️ include customerId in output
+      .populate("customerId", "fname lname")
+      .select("title comment rating createdAt customerId")
       .sort({ createdAt: -1 });
 
     res.json({ status: "success", data: reviews });
