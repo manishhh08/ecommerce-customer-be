@@ -19,20 +19,75 @@ Our services:
 
 Company mission:
 - Make technology accessible and enjoyable for everyone
-- Help customers connect, create, and enjoy technology in their everyday lives`;
+- Help customers connect, create, and enjoy technology in their everyday lives.`;
 
 export const chatAI = async (message) => {
-  let userEnquiry;
-  const products = await getProductsByFilter({ status: "active" });
-
-  if (message.toLowerCase().includes("product")) {
-    userEnquiry = products.map((p) => `${p.name}: $${p.price}`).join("\n");
-  }
-  if (message.toLowerCase().includes("about you")) userEnquiry = aboutUs;
-  const prompt = `You are a helpful assistant for our business. Here is our data: ${userEnquiry}
-  Answer the user's question based only on this data.
-  Question: ${message}`;
   try {
+    const msg = message.toLowerCase().trim();
+    let userEnquiry = "";
+    let contextType = "";
+    let products = [];
+
+    if (
+      msg.includes("about you") ||
+      msg.includes("about electrahub") ||
+      msg.includes("who are you")
+    ) {
+      userEnquiry = aboutUs;
+      contextType = "about" || "who";
+    } else if (
+      /(product|category|subcategory|show|find|list|available|buy|have|sell|want|looking|search|get|offer|do|is)/i.test(
+        msg
+      )
+    ) {
+      const keyword = msg
+        .replace(
+          /\b(show|find|list|available|buy|retrieve|category|subcategory|products?|me|some|all|please|of|with|price|have|sell|want|looking|search|get|offer|do|is|you|there|any|a|an|the|for|that|which|like)\b/gi,
+          ""
+        )
+        .trim();
+      console.log("Extracted keyword:", keyword);
+
+      if (!keyword) {
+        userEnquiry = "Please specify which product you're looking for.";
+      } else {
+        const wordRegex = new RegExp(`\\b${keyword}\\b`, "i");
+
+        const filters = {
+          status: "active",
+          $or: [
+            { "category.name": { $regex: wordRegex } },
+            { "subcategory.name": { $regex: wordRegex } },
+            { name: { $regex: wordRegex } },
+            { description: { $regex: wordRegex } },
+          ],
+        };
+
+        products = await getProductsByFilter(filters);
+
+        if (products?.length > 0) {
+          userEnquiry = `Here are some ${
+            keyword || "available"
+          } products we found:`;
+          contextType = "products";
+        } else {
+          userEnquiry = `Sorry, we couldn't find any products related to "${keyword}".`;
+        }
+      }
+    }
+    const prompt = `You are a helpful assistant for our business. Here is our data: ${userEnquiry}
+    Answer the user's question based only on this data.
+    ${
+      contextType === "products"
+        ? "Product Data:\n" + userEnquiry
+        : contextType === "about"
+        ? "About Info:\n" + userEnquiry
+        : "If user asks about our products or services, respond accordingly based on company info."
+    }
+    
+    Question: ${message}
+    Answer using only with the data provided. If the answer is not in the data, respond with 'I'm sorry, I don't have that information at the moment.'`;
+
     const result = await ai.models.generateContent({
       model: "gemini-2.0-flash",
       contents: [prompt],
@@ -42,8 +97,9 @@ export const chatAI = async (message) => {
       .join("");
     console.log("Response:", responseText);
 
-    return responseText;
-  } catch (err) {
-    throw err;
+    return { text: responseText, products };
+  } catch (error) {
+    console.error("Chat AI Error:", error);
+    throw error;
   }
 };

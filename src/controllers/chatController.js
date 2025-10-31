@@ -9,9 +9,12 @@ export const chatResponse = async (req, res) => {
 
   const result = await chatAI(message);
   if (result) {
-    res
-      .status(200)
-      .json({ status: "success", message: "chat successful", result });
+    res.status(200).json({
+      status: "success",
+      message: "chat successful",
+      text: result.text || "",
+      products: result.products || [],
+    });
   } else {
     res.status(500).json({ status: "error", message: "chat unsuccessful" });
   }
