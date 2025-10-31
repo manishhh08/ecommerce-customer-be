@@ -46,7 +46,6 @@ export const chatAI = async (message) => {
           ""
         )
         .trim();
-      console.log("Extracted keyword:", keyword);
 
       if (!keyword) {
         userEnquiry = "Please specify which product you're looking for.";
