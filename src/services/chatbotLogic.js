@@ -100,7 +100,13 @@ export const chatAI = async (message) => {
       if (keywords.length === 0) {
         userEnquiry = "Please specify which product you're looking for.";
       } else {
-        const regexArray = keywords.map((item) => new RegExp(`${item}s?`, "i"));
+        const regexArray = keywords.map(
+          (word) =>
+            new RegExp(
+              `\\b${word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(s)?\\b`,
+              "i"
+            )
+        );
 
         const filter = {
           $and: [
