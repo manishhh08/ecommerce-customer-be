@@ -10,20 +10,28 @@ export const transporter = nodemailer.createTransport({
     pass: config.nodemailer.pass,
   },
 });
+console.log(config.nodemailer);
 
-export const emailFormatter = (to, subject, name, verifyUrl = null) => {
+export const emailFormatter = (
+  to,
+  subject,
+  name,
+  actionUrl = null,
+  type = "verify"
+) => {
   const greeting = `Hi ${name},`;
-  const introText = `Welcome to Electra Hub! Just one more step before you can start getting the best tech deals.`;
+  const introText =
+    type === "verify"
+      ? `Welcome to Electra Hub! Just one more step before you can start getting the best tech deals.`
+      : `You requested a password reset. Use the button below to reset your password.`;
   const outroText = `If you didn’t request this, you can safely ignore this email.`;
 
-  const text = verifyUrl
-    ? `${greeting}\n\n${introText}\n\nCopy and paste the link below to a browser to verify:\n${verifyUrl}\n\n${outroText}`
-    : `${greeting}\n\n${introText}\n\n${outroText}`;
+  const buttonText = type === "verify" ? "Verify Email" : "Reset Password";
 
-  const verifyButton = verifyUrl
+  const buttonHtml = actionUrl
     ? `
       <div style="text-align: center; margin: 25px 0;">
-        <a href="${verifyUrl}"
+        <a href="${actionUrl}"
           style="
             background-color: #ff6b35;
             color: white;
@@ -33,56 +41,35 @@ export const emailFormatter = (to, subject, name, verifyUrl = null) => {
             font-weight: bold;
             display: inline-block;
           ">
-          Verify Email
+          ${buttonText}
         </a>
       </div>
     `
     : "";
 
   const html = `
-    <div style="
-      font-family: Arial, sans-serif;
-      background-color: #f9f9f9;
-      padding: 30px;
-    ">
-      <div style="
-        max-width: 600px;
-        margin: auto;
-        background: white;
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      ">
-          <div style="text-align: center; background-color: rgba(0, 194, 255, 0.22); padding: 25px 20px;">
-          <img
-            src="https://res.cloudinary.com/dlsiyrp36/image/upload/v1760704843/electrahub_mwxx9p.png"
-            alt="Electra Hub Logo"
-            style="max-width: 120px; height: 50px; display: block; margin: 0 auto 10px;"
-          />
-          <h2 style="color: #333; margin: 0; font-size: 22px; font-weight: 600;">
-            Electra Hub ⚡
-          </h2>
+    <div style="font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 30px;">
+      <div style="max-width: 600px; margin: auto; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+        <div style="text-align: center; background-color: rgba(0, 194, 255, 0.22); padding: 25px 20px;">
+          <img src="https://res.cloudinary.com/dlsiyrp36/image/upload/v1760704843/electrahub_mwxx9p.png" alt="Electra Hub Logo" style="max-width: 120px; height: 50px; display: block; margin: 0 auto 10px;" />
+          <h2 style="color: #333; margin: 0; font-size: 22px; font-weight: 600;">Electra Hub ⚡</h2>
         </div>
         <div style="padding: 20px;">
           <p style="font-size: 16px; color: #333;">${greeting}</p>
           <p style="font-size: 15px; color: #555;">${introText}</p>
-          ${verifyButton}
-          <p style="color: #777; font-size: 14px; margin-top: 30px;">
-            ${outroText}
-          </p>
+          ${buttonHtml}
+          <p style="color: #777; font-size: 14px; margin-top: 30px;">${outroText}</p>
         </div>
-        <div style="
-          background-color: #f1f1f1;
-          padding: 10px;
-          text-align: center;
-          font-size: 12px;
-          color: #777;
-        ">
+        <div style="background-color: #f1f1f1; padding: 10px; text-align: center; font-size: 12px; color: #777;">
           &copy; ${new Date().getFullYear()} ElectraHub. All rights reserved.
         </div>
       </div>
     </div>
   `;
+
+  const text = `${greeting}\n\n${introText}\n\n${
+    actionUrl || ""
+  }\n\n${outroText}`;
 
   return {
     from: '"Electra Hub ⚡" <noreply@electrahub.com>',

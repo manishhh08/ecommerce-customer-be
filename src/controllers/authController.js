@@ -172,13 +172,31 @@ export const forgotPassword = async (req, res) => {
     const resetUrl = `http://localhost:4001/api/auth/reset-password?token=${resetToken}&email=${email}`;
 
     // Send email
+    // const emailContent = emailFormatter(
+    //   email,
+    //   "Reset Your Password",
+    //   user.fname,
+    //   resetUrl
+    // );
+
+    //     const emailContent = emailFormatter(
+    //   user.email,
+    //   "Verify Your Electra Hub Account",
+    //   user.fname,
+    //   verifyUrl,
+    //   "verify"
+    // );
+
     const emailContent = emailFormatter(
-      email,
+      user.email,
       "Reset Your Password",
       user.fname,
       resetUrl
     );
-    await transporter.sendMail(emailContent);
+
+    const info = await transporter.sendMail(emailContent);
+    console.log("Message sent:", info.messageId);
+    console.log("Preview URL:", nodemailer.getTestMessageUrl(info));
 
     return res.status(200).json({
       status: "success",

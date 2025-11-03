@@ -159,7 +159,7 @@ POST http://localhost:4001/api/auth/forgot-password
 Content-Type: application/json
 
 {
-  "email": "prasika@gmail.com"
+  "email": "rami@gmail.com"
 }
 
 ### 4️⃣ Reset Password (replace <TOKEN> with actual token from email)
@@ -167,8 +167,8 @@ POST http://localhost:4001/api/auth/reset-password
 Content-Type: application/json
 
 {
-  "email": "prasika@gmail.com",
-  "token": "3e8733260f4d531276504aaf73bcfe261c4f72a2563de1b7eb388e2ace75b922",
+  "email": "rami@gmail.com",
+  "token": "aQNSEUHLt3QrN4ABaQgktQ19kKym9i0NAAAAKKST1A.M5496IQC.MUtbNmE",
   "newPassword": "NewPassword123"
 }
 
