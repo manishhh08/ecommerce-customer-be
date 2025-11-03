@@ -1,4 +1,8 @@
-import { addRecentlyViewedProduct, getRecentlyViewedProducts, updateById } from "../models/customers/customerModel.js";
+import {
+  addRecentlyViewedProduct,
+  getRecentlyViewedProducts,
+  updateById,
+} from "../models/customers/customerModel.js";
 
 export const getCustomerDetail = (req, res) => {
   try {
@@ -53,7 +57,10 @@ export const recordRecentlyViewed = async (req, res) => {
   try {
     const customerId = req.user._id; // from auth middleware
     const { productId } = req.body;
-    if (!productId) return res.status(400).json({ status: "error", message: "productId required" });
+    if (!productId)
+      return res
+        .status(400)
+        .json({ status: "error", message: "productId required" });
 
     await addRecentlyViewedProduct(customerId, productId);
     res.json({ status: "success" });
@@ -66,7 +73,10 @@ export const recordRecentlyViewed = async (req, res) => {
 export const fetchRecentlyViewed = async (req, res) => {
   try {
     const customerId = req.user._id;
-    const products = await getRecentlyViewedProducts(customerId, Number(req.query.limit) || 12);
+    const products = await getRecentlyViewedProducts(
+      customerId,
+      Number(req.query.limit) || 12
+    );
     res.json({ status: "success", products });
   } catch (e) {
     res.status(500).json({ status: "error", message: e.message });
