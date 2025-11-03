@@ -149,3 +149,5 @@ export const getTopRatedProductsWithReviews = async (req, res) => {
     res.status(500).json({ status: "error", message: "Server error" });
   }
 };
+
+export const getHotDealProducts = async (req, res) => {};
