@@ -23,6 +23,19 @@ Company mission:
 
 const greetingResponse = `Hello! 👋 How can I help you today?`;
 
+const pluralMap = {
+  laptops: "laptop",
+  desktops: "desktop",
+  phones: "phone",
+  tablets: "tablet",
+  headphones: "headphone",
+  speakers: "speaker",
+  consoles: "console",
+  chargers: "charger",
+  cables: "cable",
+  accessories: "accessory",
+};
+
 export const chatAI = async (message) => {
   try {
     const msg = message.toLowerCase();
@@ -75,55 +88,49 @@ export const chatAI = async (message) => {
         "product",
         "products",
       ];
-      const priceFilter = msg.match(/\d+(\.\d+)?/g)?.map(Number) || [];
 
+      const priceFilter = msg.match(/\d+(\.\d+)?/g)?.map(Number) || [];
       let priceCondition = {};
 
       if (priceFilter.length === 1) {
         if (/(under|below|less than|cheaper than|max)/i.test(msg)) {
           priceCondition = { price: { $lte: priceFilter[0] } };
-        } else if (/(above|more than|greater than)/i.test(msg)) {
+        } else if (/(above|more than|greater than|expensive than)/i.test(msg)) {
           priceCondition = { price: { $gte: priceFilter[0] } };
         } else {
           priceCondition = { price: { $lte: priceFilter[0] } };
         }
       } else if (priceFilter.length === 2) {
-        // two numbers: treat as range
         const min = Math.min(priceFilter[0], priceFilter[1]);
         const max = Math.max(priceFilter[0], priceFilter[1]);
         priceCondition = { price: { $gte: min, $lte: max } };
       }
 
       const words = msg.split(/\s+/);
-      const keywords = words.filter((word) => !checkKeyword.includes(word));
+      const keywords = words
+        .filter((word) => !checkKeyword.includes(word))
+        .map((word) => {
+          if (pluralMap[word]) return pluralMap[word];
+          return word.replace(/(s|es)$/i, "");
+        });
 
       if (keywords.length === 0) {
         userEnquiry = "Please specify which product you're looking for.";
       } else {
-        const regexArray = keywords.map(
-          (word) =>
-            new RegExp(
-              `\\b${word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(s)?\\b`,
-              "i"
-            )
-        );
+        const orConditions = [
+          ...keywords.map((k) => ({ category: new RegExp(k, "i") })),
+          ...keywords.map((k) => ({ subcategory: new RegExp(k, "i") })),
+          ...keywords.map((k) => ({ name: new RegExp(k, "i") })),
+        ];
 
-        const filter = {
-          $and: [
-            {
-              $or: [
-                { name: { $in: regexArray } },
-                { category: { $in: regexArray } },
-                { subcategory: { $in: regexArray } },
-              ],
-            },
-            priceCondition,
-          ],
-        };
+        let filter = { $or: orConditions };
+        if (Object.keys(priceCondition).length > 0) {
+          filter = { $and: [filter, priceCondition] };
+        }
 
         products = await getProductsByFilter(filter, {}, 20);
 
-        if (products?.length === 0) {
+        if (!products?.length === 0) {
           userEnquiry = `Sorry, we couldn't find any products related to "${keywords.join(
             " "
           )}".`;
@@ -144,16 +151,17 @@ export const chatAI = async (message) => {
     }
 
     const prompt = `You are a helpful assistant for our business. Here is our data: ${userEnquiry}
-    Answer the user's question based only on this data.
-    ${
-      contextType === "products"
-        ? "Product Data:\n" + userEnquiry
-        : contextType === "about"
-        ? "About Info:\n" + userEnquiry
-        : "If user asks about our products or services, respond accordingly based on company info."
-    }
-    Question: ${message}
-    Answer using only with the data provided. If the answer is not in the data, respond with 'I'm sorry, I don't have that information at the moment.'`;
+Answer the user's question based only on this data.
+${
+  contextType === "products"
+    ? "Product Data:\n" + userEnquiry
+    : contextType === "about"
+    ? "About Info:\n" + userEnquiry
+    : "If user asks about our products or services, respond accordingly based on company info."
+}
+
+Question: ${message}
+Answer using only with the data provided. If the answer is not in the data, respond with 'I'm sorry, I don't have that information at the moment.'`;
 
     const result = await ai.models.generateContent({
       model: "gemini-2.0-flash",
