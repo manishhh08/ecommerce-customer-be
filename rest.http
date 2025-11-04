@@ -7,8 +7,8 @@ Content-Type: application/json
 {
   "fname": "prasika",
   "lname": "adhikari",
-  "email": "prasika@gmail.com",
-  "phone": "1234567",
+  "email": "prashikauser@gmail.com",
+  "phone": "1234",
   "password": "12345",
   "cpassword": "12345"
 }
@@ -20,7 +20,7 @@ POST {{apiURL}}/auth/login
 Content-Type: application/json
 
 {
-  "email": "prasika@gmail.com", 
+  "email": "prasikauser@gmail.com", 
   "password": "12345"
 
 }
@@ -59,6 +59,9 @@ Content-Type: application/json
 
 #####
 GET {{apiURL}}/products
+
+#####
+GET {{apiURL}}/products/featured-products
 
 
 
@@ -132,51 +135,59 @@ Content-Type: application/json
 
 
 ### 1️⃣ Signup (create new user)
-POST http://localhost:4001/api/auth/signup
+POST http://localhost:4001/api/auth/register
 Content-Type: application/json
 
 {
-  "fname": "ram",
+  "fname": "rena",
   "lname": "Adhik",
-  "email": "rami@gmail.com",
-  "password": "Password123",
+  "email": "rina1@gmail.com",
+  "password": "12345",
   "phone": "1234567890",
-   "cpassword": "Password123"
+   "cpassword": "12345"
  
 }
 
-### 2️⃣ Login (to verify signup)
+###  Login (to verify signup)
 POST http://localhost:4001/api/auth/login
 Content-Type: application/json
 
 {
-  "email": "rami@gmail.com",
-  "password": "Password123"
+  "email": "rina1@gmail.com",
+  "password": "12345"
 }
 
-### 3️⃣ Forgot Password (send reset link)
+###  Forgot Password (send reset link)
 POST http://localhost:4001/api/auth/forgot-password
 Content-Type: application/json
 
 {
-  "email": "rami@gmail.com"
+  "email": "rina1@gmail.com"
 }
 
-### 4️⃣ Reset Password (replace <TOKEN> with actual token from email)
+###  Reset Password (replace <TOKEN> with actual token from email)
 POST http://localhost:4001/api/auth/reset-password
 Content-Type: application/json
 
 {
   "email": "rami@gmail.com",
-  "token": "aQNSEUHLt3QrN4ABaQgktQ19kKym9i0NAAAAKKST1A.M5496IQC.MUtbNmE",
+  "token": "",
   "newPassword": "NewPassword123"
 }
 
-### 5️⃣ Login with new password (verify reset worked)
+###  Login with new password 
 POST http://localhost:4001/api/auth/login
 Content-Type: application/json
 
 {
   "email": "prasika@gmail.com",
   "password": "NewPassword123"
+}
+###  Verify Email
+POST   http://localhost:4001/api/auth/verify-email
+Content-Type: application/json
+
+{
+  "email": "rami@gmail.com",
+  "token": "YOUR_VERIFICATION_TOKEN"
 }

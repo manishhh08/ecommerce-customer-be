@@ -1,5 +1,5 @@
 import config from "../config/config.js";
-import crypto from "crypto";
+import nodemailer from "nodemailer";
 import { emailFormatter, transporter } from "../config/nodemailer.js";
 import {
   findByFilter,
@@ -9,8 +9,8 @@ import {
 import { encodeFunction, decodeFunction } from "../utils/encodeHelper.js";
 import { createAccessToken, createRefreshToken } from "../utils/jwt.js";
 import { v4 as uuidv4 } from "uuid";
+import crypto from "crypto";
 import bcrypt from "bcryptjs";
-import nodemailer from "nodemailer";
 
 export const createNewCustomer = async (req, res) => {
   try {
@@ -38,12 +38,7 @@ export const createNewCustomer = async (req, res) => {
     }
     const hashedPassword = encodeFunction(password);
 
-    // await emailVerify(formattedEmail);
-
-    const info = await transporter.sendMail(formattedEmail);
-    console.log("Message sent:", info.messageId);
-    console.log("Preview URL:", nodemailer.getTestMessageUrl(info));
-
+    await emailVerify(formattedEmail);
     const user = await newCustomer({
       email,
       fname,
@@ -74,9 +69,15 @@ export const verifyCustomer = async (req, res) => {
     const { token, email } = req.body;
     const user = await findByFilter({ email: email });
     if (!user) {
-      res.status(500).json({ status: "error", message: "User not found" });
+      return res
+        .status(404)
+        .json({ status: "error", message: "User not found" });
     }
+
     if (user.verificationToken === token) {
+      console.log("Verification token sent by user:", token);
+      console.log("Verification token in DB:", user.verificationToken);
+
       const updateIsVerified = await updateById(user._id, { isVerified: true });
       if (updateIsVerified)
         return res
@@ -104,7 +105,7 @@ export const loginCustomer = async (req, res) => {
         .json({ status: "error", message: "Invalid credentials" });
     }
 
-    const isPasswordValid = decodeFunction(password, user.password);
+    const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
       return res
@@ -145,57 +146,38 @@ export const loginCustomer = async (req, res) => {
 export const forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
-
     const user = await findByFilter({ email });
+
     if (!user) {
-      // always respond success to prevent email enumeration
       return res.status(200).json({
         status: "success",
         message: "If that email exists, a reset link has been sent.",
       });
     }
 
-    // Generate token
     const resetToken = crypto.randomBytes(32).toString("hex");
     const hashedToken = crypto
       .createHash("sha256")
       .update(resetToken)
       .digest("hex");
 
-    // Save hashed token + expiry in DB
     await updateById(user._id, {
       resetPasswordTokenHash: hashedToken,
-      resetPasswordExpiresAt: Date.now() + 15 * 60 * 1000, // 15 mins
+      resetPasswordExpiresAt: Date.now() + 15 * 60 * 1000,
     });
 
-    // const resetUrl = `${config.frontend.domain}/reset-password?token=${resetToken}&email=${email}`;
-    const resetUrl = `http://localhost:4001/api/auth/reset-password?token=${resetToken}&email=${email}`;
+    const resetUrl = `${config.frontend.domain}/reset-password?token=${resetToken}&email=${email}`;
 
-    // Send email
-    // const emailContent = emailFormatter(
-    //   email,
-    //   "Reset Your Password",
-    //   user.fname,
-    //   resetUrl
-    // );
-
-    //     const emailContent = emailFormatter(
-    //   user.email,
-    //   "Verify Your Electra Hub Account",
-    //   user.fname,
-    //   verifyUrl,
-    //   "verify"
-    // );
-
-    const emailContent = emailFormatter(
-      user.email,
+    const mailOptions = emailFormatter(
+      email,
       "Reset Your Password",
       user.fname,
       resetUrl
     );
 
-    const info = await transporter.sendMail(emailContent);
-    console.log("Message sent:", info.messageId);
+    const info = await transporter.sendMail(mailOptions);
+
+    // Log Ethereal preview link
     console.log("Preview URL:", nodemailer.getTestMessageUrl(info));
 
     return res.status(200).json({
@@ -215,27 +197,29 @@ export const resetPassword = async (req, res) => {
   try {
     const { email, token, newPassword } = req.body;
 
+    //  Hash the incoming token to compare with DB
     const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
 
-    const customer = await findByFilter({
+    //  Find the user by email and hashed token
+    const user = await findByFilter({
       email,
       resetPasswordTokenHash: hashedToken,
+      resetPasswordExpiresAt: { $gt: Date.now() }, // ensure token not expired
     });
 
-    if (
-      !customer ||
-      !customer.resetPasswordExpiresAt ||
-      customer.resetPasswordExpiresAt < Date.now()
-    ) {
+    if (!user) {
       return res.status(400).json({
         status: "error",
-        message: "Invalid or expired reset token",
+        message: "Invalid or expired password reset token",
       });
     }
 
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    //  Hash the new password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
 
-    await updateById(customer._id, {
+    //  Update password and clear token fields
+    await updateById(user._id, {
       password: hashedPassword,
       resetPasswordTokenHash: undefined,
       resetPasswordExpiresAt: undefined,
@@ -243,7 +227,7 @@ export const resetPassword = async (req, res) => {
 
     return res.status(200).json({
       status: "success",
-      message: "Password has been reset successfully",
+      message: "Password has been reset successfully. You can now log in.",
     });
   } catch (error) {
     console.error("Reset Password Error:", error);
@@ -252,4 +236,13 @@ export const resetPassword = async (req, res) => {
       message: "Failed to reset password",
     });
   }
+};
+export const password = async (req, res) => {
+  const token = req.query.token;
+  res.send(`<form action="/api/auth/reset-password" method="POST">
+              <input type="hidden" name="token" value="${token}" />
+              <input type="email" name="email" />
+              <input type="password" name="newPassword" />
+              <button type="submit">Reset</button>
+            </form>`);
 };
