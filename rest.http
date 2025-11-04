@@ -1,14 +1,14 @@
 @apiURL = http://localhost:4001/api/v1
 #####create new user
 ####
-POST {{apiURL}}/auth/signup
+POST {{apiURL}}/auth/register
 Content-Type: application/json
 
 {
-  "fname": "banna",
-  "lname": "smith",
-  "email": "banna@gmail.com",
-  "phone": "789456123",
+  "fname": "prasika",
+  "lname": "adhikari",
+  "email": "prashikauser@gmail.com",
+  "phone": "1234",
   "password": "12345",
   "cpassword": "12345"
 }
@@ -20,7 +20,7 @@ POST {{apiURL}}/auth/login
 Content-Type: application/json
 
 {
-  "email": "banna@gmail.com", 
+  "email": "prasikauser@gmail.com", 
   "password": "12345"
 
 }
@@ -150,7 +150,7 @@ POST http://localhost:4001/api/auth/login
 Content-Type: application/json
 
 {
-  "email": "banna@gmail.com",
+  "email": "rina@gmail.com",
   "password": "12345"
 }
 
@@ -159,7 +159,7 @@ POST http://localhost:4001/api/auth/forgot-password
 Content-Type: application/json
 
 {
-  "email": "anna@gmail.com"
+  "email": "rina@gmail.com"
 }
 
 ###  Reset Password (replace <TOKEN> with actual token from email)

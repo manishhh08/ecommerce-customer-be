@@ -1,5 +1,5 @@
 import config from "../config/config.js";
-import crypto from "crypto";
+import nodemailer from "nodemailer";
 import { emailFormatter, transporter } from "../config/nodemailer.js";
 import {
   findByFilter,
@@ -9,6 +9,7 @@ import {
 import { encodeFunction, decodeFunction } from "../utils/encodeHelper.js";
 import { createAccessToken, createRefreshToken } from "../utils/jwt.js";
 import { v4 as uuidv4 } from "uuid";
+import crypto from "crypto";
 
 export const createNewCustomer = async (req, res) => {
   try {
@@ -140,7 +141,6 @@ export const forgotPassword = async (req, res) => {
     const { email } = req.body;
     const user = await findByFilter({ email });
 
-    // always return success to prevent email enumeration
     if (!user) {
       return res.status(200).json({
         status: "success",
@@ -148,32 +148,29 @@ export const forgotPassword = async (req, res) => {
       });
     }
 
-    // Generate token
     const resetToken = crypto.randomBytes(32).toString("hex");
     const hashedToken = crypto
       .createHash("sha256")
       .update(resetToken)
       .digest("hex");
 
-    // Save hashed token and expiry
     await updateById(user._id, {
       resetPasswordTokenHash: hashedToken,
-      resetPasswordExpiresAt: Date.now() + 15 * 60 * 1000, // 15 min
+      resetPasswordExpiresAt: Date.now() + 15 * 60 * 1000,
     });
 
-    // Build reset URL
     const resetUrl = `${config.frontend.domain}/reset-password?token=${resetToken}&email=${email}`;
 
-    // Format and send email
     const mailOptions = emailFormatter(
       email,
       "Reset Your Password",
       user.fname,
       resetUrl
     );
+
     const info = await transporter.sendMail(mailOptions);
 
-    // Log the Ethereal preview link
+    // Log Ethereal preview link
     console.log("Preview URL:", nodemailer.getTestMessageUrl(info));
 
     return res.status(200).json({
@@ -193,35 +190,37 @@ export const resetPassword = async (req, res) => {
   try {
     const { email, token, newPassword } = req.body;
 
+    //  Hash the incoming token to compare with DB
     const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
 
-    const customer = await findByFilter({
+    //  Find the user by email and hashed token
+    const user = await findByFilter({
       email,
       resetPasswordTokenHash: hashedToken,
+      resetPasswordExpiresAt: { $gt: Date.now() }, // ensure token not expired
     });
 
-    if (
-      !customer ||
-      !customer.resetPasswordExpiresAt ||
-      customer.resetPasswordExpiresAt < Date.now()
-    ) {
+    if (!user) {
       return res.status(400).json({
         status: "error",
-        message: "Invalid or expired reset token",
+        message: "Invalid or expired password reset token",
       });
     }
 
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    //  Hash the new password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
 
-    await updateById(customer._id, {
+    //  Update password and clear token fields
+    await updateById(user._id, {
       password: hashedPassword,
-      resetPasswordTokenHash: null,
-      resetPasswordExpiresAt: null,
+      resetPasswordTokenHash: undefined,
+      resetPasswordExpiresAt: undefined,
     });
 
     return res.status(200).json({
       status: "success",
-      message: "Password has been reset successfully",
+      message: "Password has been reset successfully. You can now log in.",
     });
   } catch (error) {
     console.error("Reset Password Error:", error);
