@@ -136,12 +136,12 @@ POST http://localhost:4001/api/auth/register
 Content-Type: application/json
 
 {
-  "fname": "ram",
+  "fname": "rena",
   "lname": "Adhik",
-  "email": "rami@gmail.com",
-  "password": "Password123",
+  "email": "rina1@gmail.com",
+  "password": "12345",
   "phone": "1234567890",
-   "cpassword": "Password123"
+   "cpassword": "12345"
  
 }
 
@@ -150,7 +150,7 @@ POST http://localhost:4001/api/auth/login
 Content-Type: application/json
 
 {
-  "email": "rina@gmail.com",
+  "email": "rina1@gmail.com",
   "password": "12345"
 }
 
@@ -159,7 +159,7 @@ POST http://localhost:4001/api/auth/forgot-password
 Content-Type: application/json
 
 {
-  "email": "rina@gmail.com"
+  "email": "rina1@gmail.com"
 }
 
 ###  Reset Password (replace <TOKEN> with actual token from email)
@@ -168,7 +168,7 @@ Content-Type: application/json
 
 {
   "email": "rami@gmail.com",
-  "token": "ee6ea2395d4b1c83ddea769697703b11b3744355cc57664fbae6c7e65ccfda9",
+  "token": "",
   "newPassword": "NewPassword123"
 }
 
