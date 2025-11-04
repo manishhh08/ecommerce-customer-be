@@ -17,7 +17,7 @@ const config = {
 
   nodemailer: {
     host: process.env.NODEMAILER_HOST,
-    port: process.env.NODEMAILER_PORT,
+    port: Number(process.env.NODEMAILER_PORT) || 587,
     user: process.env.NODEMAILER_USER,
     pass: process.env.NODEMAILER_PASS,
   },
