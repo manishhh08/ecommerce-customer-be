@@ -35,7 +35,22 @@ export const getFeaturedProducts = async (req, res) => {
       if (!products) return null;
       return products;
     };
+
+    const hotDealsFinder = async (count = 4) => {
+      const products = await getProductsByFilter({});
+      let randomArray = [];
+      while (randomArray.length < count) {
+        let randNumb = Math.floor(Math.random() * products.length);
+        let product = products[randNumb];
+        if (!randomArray.includes(product)) {
+          randomArray.push(product);
+        }
+      }
+      return randomArray;
+    };
+
     const bestSellerProducts = await bestSellerFinder();
+    const hotDealsProducts = await hotDealsFinder();
     if (!recentlyAddedProducts || !bestSellerProducts)
       return res
         .status(500)
@@ -44,6 +59,7 @@ export const getFeaturedProducts = async (req, res) => {
       status: "success",
       recentlyAddedProducts,
       bestSellerProducts,
+      hotDealsProducts,
       message: "Featured products fetched",
     });
   } catch (error) {
@@ -149,5 +165,3 @@ export const getTopRatedProductsWithReviews = async (req, res) => {
     res.status(500).json({ status: "error", message: "Server error" });
   }
 };
-
-export const getHotDealProducts = async (req, res) => {};
