@@ -60,6 +60,9 @@ Content-Type: application/json
 #####
 GET {{apiURL}}/products
 
+#####
+GET {{apiURL}}/products/featured-products
+
 
 
 #####
