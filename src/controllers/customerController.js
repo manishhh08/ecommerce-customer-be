@@ -69,7 +69,6 @@ export const recordRecentlyViewed = async (req, res) => {
   }
 };
 
-// GET /api/v1/customers/recently-viewed
 export const fetchRecentlyViewed = async (req, res) => {
   try {
     const customerId = req.user._id;
