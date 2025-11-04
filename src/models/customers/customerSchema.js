@@ -42,6 +42,12 @@ const customerSchema = new mongoose.Schema(
     verificationToken: {
       type: String,
     },
+    resetPasswordTokenHash: {
+      type: String, //store hased token only
+    },
+    resetPasswordExpiresAt: {
+      type: Date, //token expiry timestamp
+    },
     recentViewedProducts: [
       {
         productId: {
