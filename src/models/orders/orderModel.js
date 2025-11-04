@@ -11,6 +11,14 @@ export const findByFilter = (filterObj) => {
   return Order.findOne(filterObj);
 };
 
+// export const updateOrder = async (filter, updateData) => {
+//   const { _id, ...safeUpdate } = updateData;
+//   return Order.findOneAndUpdate(filter, { $set: safeUpdate }, { new: true });
+// };
+
+export const updateOrder = async (filter, updateData) => {
+  return await Order.updateOne(filter, updateData, { new: true });
+};
 export const getMostPopularProducts = () => {
   return Order.aggregate([
     // 1️⃣ Unwind the items array so each product becomes its own document
