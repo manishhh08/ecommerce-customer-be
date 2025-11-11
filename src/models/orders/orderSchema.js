@@ -36,7 +36,7 @@ const orderSchema = new mongoose.Schema(
       ref: "customer",
       required: true,
     },
-    items: [orderItemSchema], // <-- array of items
+    items: [orderItemSchema],
     total: {
       type: Number,
       required: true,
